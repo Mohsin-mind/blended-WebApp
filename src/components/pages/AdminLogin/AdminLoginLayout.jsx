@@ -6,7 +6,7 @@ import adminLoginFrame from '@/assets/images/svg/admin_login_frame.svg';
 function AdminLoginLayout({
   children,
   imageSrc = adminLoginFrame,
-  altText = 'Admin Login',
+  altText = 'Login',
   formComponent: FormComponent = LoginFormSection,
 }) {
   return (

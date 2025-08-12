@@ -10,7 +10,7 @@ const PUBLIC_ROUTE_CONFIG = [
     element: <PublicRouteValidate />,
     children: [
       { path: '/', title: 'Login', element: <Navigate to='/login' replace /> },
-      { path: '/login', title: 'Admin Login', element: <Login /> },
+      { path: '/login', title: 'Login', element: <Login /> },
       {
         path: '/forgot-password',
         title: 'Forgot Password',
