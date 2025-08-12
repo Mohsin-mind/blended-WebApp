@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import AdminLoginLayout from '@/components/pages/AdminLogin/AdminLoginLayout';
+import WebAppLoginLayout from '@/components/pages/AdminLogin/WebAppLoginLayout';
 import { loginSchema } from '@/schemas/loginSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ export default function AdminLogin() {
 
   return (
     <ZodFormProvider schema={loginSchema} onSubmit={onSubmit}>
-      <AdminLoginLayout />
+      <WebAppLoginLayout />
     </ZodFormProvider>
   );
 }

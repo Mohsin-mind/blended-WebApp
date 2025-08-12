@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import LoginFormSection from './LoginFormSection.jsx';
-import ImageSection from './ImageSection';
-import adminLoginFrame from '@/assets/images/svg/admin_login_frame.svg';
+import ImageSection from './ImageSection.jsx';
+import webappLoginFrame from '@/assets/images/svg/user_login_image.svg';
 
-function AdminLoginLayout({
-  children,
-  imageSrc = adminLoginFrame,
+function WebAppLoginLayout({
+  imageSrc = webappLoginFrame,
   altText = 'Login',
   formComponent: FormComponent = LoginFormSection,
 }) {
@@ -22,11 +21,10 @@ function AdminLoginLayout({
   );
 }
 
-AdminLoginLayout.propTypes = {
-  children: PropTypes.node,
+WebAppLoginLayout.propTypes = {
   imageSrc: PropTypes.string,
   altText: PropTypes.string,
   formComponent: PropTypes.elementType,
 };
 
-export default AdminLoginLayout;
+export default WebAppLoginLayout;

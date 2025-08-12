@@ -4,6 +4,7 @@ import InputField from '@/components/common/FormFields/InputField';
 import Button from '@/components/common/FormFields/Button';
 import logo from '@/assets/images/svg/BlendedED_Logo_blue.svg';
 import ToggleTab from '@/components/common/Navigation/ToggleTab';
+import GoogleButton from '@/components/common/FormFields/GoogleButton';
 
 function LoginFormSection() {
   const [activeTab, setActiveTab] = useState('login');
@@ -66,6 +67,27 @@ function LoginFormSection() {
             <div className='pt-4'>
               <Button type='submit' title='Login' />
             </div>
+            {/* Sign Up link */}
+            <div className='flex justify-center mt-3'>
+              <span className='text-blended-gray_5 text-base font-normal mr-1'>
+                Don't have an Account?
+              </span>
+              <span
+                className='text-blended-blue_7 text-base font-normal hover:text-blended-blue_3 transition-colors underline'
+              >
+                Sign Up
+              </span>
+            </div>
+
+            {/* Or Continue With Divider */}
+            <div className='flex items-center mt-6 mb-4'>
+              <div className='flex-1 h-px bg-[#BDC2CC]'></div>
+              <span className='px-4 text-blended-gray_5 text-sm font-normal'>Or Continue With</span>
+              <div className='flex-1 h-px bg-[#BDC2CC]'></div>
+            </div>
+
+            {/* Google Login Button */}
+            <GoogleButton />
           </div>
 
           {/* Footer Links - Now at the bottom */}
