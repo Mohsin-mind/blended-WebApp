@@ -1,0 +1,127 @@
+/* Google Fonts imports - backup for when HTML link fails */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px transparent;
+  border-radius: 14px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cbb07b;
+  border-radius: 14px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #9e885b;
+}
+
+::-moz-selection {
+  background: #cbb07b83;
+}
+
+::selection {
+  background: #cbb07b83;
+}
+
+/* Base font styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Dark mode styles */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+.pagination-container {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pagination-page {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #949494;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination-page a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pagination-page:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination-active {
+  background-color: #e2e2e2;
+  border: 1px solid #c1c1c1;
+  color: #000;
+}
+
+.pagination-active a {
+  color: #000;
+}
+
+.pagination-nav {
+  padding: 4px 8px;
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  color: #666;
+}
+
+.pagination-nav a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pagination-disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}

@@ -1,0 +1,239 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url('./icomoon.eot');
+  src:
+    url('./icomoon.eot') format('embedded-opentype'),
+    url('./icomoon.ttf') format('truetype'),
+    url('./icomoon.woff') format('woff'),
+    url('./icomoon.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-about-us:before {
+  content: '\e900';
+}
+.icon-accept:before {
+  content: '\e901';
+}
+.icon-add:before {
+  content: '\e902';
+}
+.icon-age:before {
+  content: '\e903';
+}
+.icon-anyone:before {
+  content: '\e904';
+}
+.icon-arrow-down:before {
+  content: '\e905';
+}
+.icon-attachment:before {
+  content: '\e906';
+}
+.icon-back:before {
+  content: '\e907';
+}
+.icon-block-user-one:before {
+  content: '\e908';
+}
+.icon-block-user:before {
+  content: '\e909';
+}
+.icon-body-type:before {
+  content: '\e90a';
+}
+.icon-calendar:before {
+  content: '\e90b';
+}
+.icon-chat:before {
+  content: '\e90c';
+}
+.icon-children:before {
+  content: '\e90d';
+}
+.icon-contact-us:before {
+  content: '\e90e';
+}
+.icon-delete:before {
+  content: '\e90f';
+}
+.icon-do-you-workout:before {
+  content: '\e910';
+}
+.icon-drugs:before {
+  content: '\e911';
+}
+.icon-edit:before {
+  content: '\e912';
+}
+.icon-email:before {
+  content: '\e913';
+}
+.icon-ethnicity:before {
+  content: '\e914';
+}
+.icon-eye:before {
+  content: '\e915';
+}
+.icon-faqs:before {
+  content: '\e916';
+}
+.icon-filters:before {
+  content: '\e917';
+}
+.icon-grid-view:before {
+  content: '\e918';
+}
+.icon-height:before {
+  content: '\e919';
+}
+.icon-hide-age:before {
+  content: '\e91a';
+}
+.icon-incognito-mode:before {
+  content: '\e91b';
+}
+.icon-info:before {
+  content: '\e91c';
+}
+.icon-languages:before {
+  content: '\e91d';
+}
+.icon-list-view:before {
+  content: '\e91e';
+}
+.icon-location:before {
+  content: '\e91f';
+}
+.icon-lock:before {
+  content: '\e920';
+}
+.icon-logout:before {
+  content: '\e921';
+}
+.icon-more:before {
+  content: '\e922';
+}
+.icon-networth:before {
+  content: '\e923';
+}
+.icon-next-arrow:before {
+  content: '\e924';
+}
+.icon-notification:before {
+  content: '\e925';
+}
+.icon-online-activity:before {
+  content: '\e926';
+}
+.icon-photo-verified:before {
+  content: '\e927';
+}
+.icon-prestige:before {
+  content: '\e928';
+}
+.icon-reject:before {
+  content: '\e929';
+}
+.icon-relationship:before {
+  content: '\e92a';
+}
+.icon-request-access:before {
+  content: '\e92b';
+}
+.icon-search:before {
+  content: '\e92c';
+}
+.icon-send:before {
+  content: '\e92d';
+}
+.icon-settings:before {
+  content: '\e92e';
+}
+.icon-smiley:before {
+  content: '\e92f';
+}
+.icon-subscription-and-billing:before {
+  content: '\e930';
+}
+.icon-terms-of-service:before {
+  content: '\e931';
+}
+.icon-upload:before {
+  content: '\e932';
+}
+.icon-username:before {
+  content: '\e933';
+}
+.icon-yearly-income:before {
+  content: '\e934';
+}
+.icon-verify:before {
+  content: '\e935';
+  color: #1d9bf0;
+}
+.icon-smoking:before {
+  content: '\e936';
+}
+.icon-refresh:before {
+  content: '\e937';
+}
+.icon-premium:before {
+  content: '\e939';
+}
+.icon-popular:before {
+  content: '\e93a';
+}
+.icon-orientation:before {
+  content: '\e93b';
+}
+.icon-liked:before {
+  content: '\e93c';
+  color: #f73a5a;
+}
+.icon-like:before {
+  content: '\e93d';
+}
+.icon-fill-black-star:before {
+  content: '\e93e';
+}
+.icon-double-tick:before {
+  content: '\e93f';
+  color: #1d9bf0;
+}
+.icon-close:before {
+  content: '\e940';
+}
+.icon-drinking:before {
+  content: '\e941';
+}
+.icon-sort:before {
+  content: '\e938';
+}
+.icon-sort-down:before {
+  content: '\e942';
+}
+.icon-sort-up:before {
+  content: '\e943';
+}
+.icon-sort1:before {
+  content: '\e944';
+}

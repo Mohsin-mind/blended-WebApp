@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Basic commit message validation
+# Ensure commit message is not empty and has reasonable length
+commit_regex='^.{1,50}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "Invalid commit message. Please provide a meaningful commit message (1-50 characters)."
+    exit 1
+fi

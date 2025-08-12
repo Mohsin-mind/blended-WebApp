@@ -1,0 +1,92 @@
+import plugin from 'tailwindcss/plugin';
+
+export default {
+  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+        'open-sans': ['Open Sans', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
+      },
+      colors: {
+        gold: '#CBB07B',
+        goldLight: '#EED9B1',
+        gray: '#C6C6C6',
+        grayLight: '#F5F5F5',
+        white: '#FFFFFF',
+        whiteSoft: '#FAFAFA',
+        grayMedium: '#BBBBBB',
+        black: '#000000',
+        black15: 'rgba(0,0,0,0.15)',
+        grayDark: '#666666',
+        red: '#F73A5A',
+        green: '#4CAF50',
+        blue: '#1D9BF0',
+        dark: {
+          gold: '#9E885B',
+          goldLight: '#BFA97A',
+          gray: '#444444',
+          grayLight: '#232323',
+          white: '#181818',
+          whiteSoft: '#232323',
+          grayMedium: '#555555',
+          black: '#FFFFFF',
+          black15: 'rgba(255,255,255,0.15)',
+          grayDark: '#CCCCCC',
+          red: '#D32F2F',
+          green: '#388E3C',
+          blue: '#1565C0',
+        },
+        blended: {
+          blue_1: '#22446e',
+          blue_2: '#0b264f',
+          blue_3: '#6CA7DA',
+          blue_4: '#A7CAE9',
+          blue_5: '#D5E5F3',
+          blue_6: '#050B17',
+          blue_7: '#071F4A',
+          gray_1: '#B4B6B9',
+          gray_2: '#E5E7EB',
+          gray_3: '#9CA3AF',
+          gray_4: '#D7E1EC',
+          gray_5: '#696D74',
+          gray_6: '#DAE4EE',
+          gray_7: '#E6E7E8',
+          white_1: '#F7F8FA',
+          white_2: '#FDFDFD',
+        }
+      },
+      backgroundImage: {
+        'gold-gradient': 'linear-gradient(270deg, #CBB07B 0%, #EED9B1 100%)',
+        'dark-gradient': 'linear-gradient(180deg, #191E23 0%, #000000 100%)',
+        'silver-gradient':
+          'linear-gradient(270deg, #C6C6C6 0%, #F5F5F5 50%, #C6C6C6 100%)',
+      },
+    },
+  },
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.text-80': { fontSize: 'min(12vw, 80px)' },
+        '.text-48': { fontSize: 'min(7vw, 48px)' },
+        '.text-34': { fontSize: 'min(5vw, 34px)' },
+        '.text-30': { fontSize: 'min(4vw, 30px)' },
+        '.text-26': { fontSize: 'min(3.5vw, 26px)' },
+        '.text-24': { fontSize: 'min(3vw, 24px)' },
+        '.text-22': { fontSize: 'min(2.8vw, 22px)' },
+        '.text-20': { fontSize: 'min(2.5vw, 20px)' },
+        '.text-18': { fontSize: 'min(2.2vw, 18px)' },
+        '.text-16': { fontSize: 'min(2vw, 16px)' },
+        '.text-14': { fontSize: 'min(1.8vw, 14px)' },
+        '.text-13': { fontSize: 'min(1.6vw, 13px)' },
+        '.text-12': { fontSize: 'min(1.5vw, 12px)' },
+        '.text-11': { fontSize: 'min(1.3vw, 11px)' },
+        '.text-10': { fontSize: 'min(1.2vw, 10px)' },
+        '.text-8': { fontSize: 'min(1vw, 8px)' },
+      });
+    }),
+  ],
+};
