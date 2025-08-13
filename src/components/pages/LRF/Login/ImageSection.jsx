@@ -2,7 +2,13 @@ import PropTypes from 'prop-types';
 
 function ImageSection({ imageSrc, altText = 'Login' }) {
   return (
-    <img src={imageSrc} alt={altText} className='w-full h-full object-cover' />
+    <div className="w-full h-full">
+      <img
+        src={imageSrc}
+        alt={altText}
+        className="w-full h-full object-cover lg:object-fill"
+      />
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Loader from '../Loader';
 import { classNames } from '@/utils/helper';
 
-function Button({ type = 'button', title, className = '' }) {
+function Button({ type = 'button', title, className = '', ...props }) {
   const loading = useFormLoading();
 
   return (
@@ -11,13 +11,11 @@ function Button({ type = 'button', title, className = '' }) {
       type={type}
       className={classNames(
         'w-full bg-blended-blue_7 text-white font-medium py-3 hover:bg-blended-blue_1 transition-colors',
-        {
-          'cursor-progress bg-opacity-80': loading,
-          'cursor-pointer': !loading,
-        },
+        loading ? 'cursor-progress bg-opacity-80' : 'cursor-pointer',
         className
       )}
       disabled={loading}
+      {...props}
     >
       <span className='relative w-fit text-white text-lg font-semibold'>
         {loading && (

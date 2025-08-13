@@ -55,6 +55,7 @@ export default {
           gray_5: '#696D74',
           gray_6: '#DAE4EE',
           gray_7: '#E6E7E8',
+          gray_8: '#373C45',
           white_1: '#F7F8FA',
           white_2: '#FDFDFD',
         }

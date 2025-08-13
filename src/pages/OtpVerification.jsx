@@ -1,60 +1,78 @@
-import Background from '@/components/pages/LRF/Background';
-import Card from '@/components/pages/LRF/Card';
-import CardContainer from '@/components/pages/LRF/CardContainer';
-import CardTitle from '@/components/pages/LRF/CardTitle';
-import OtpVerificationForm from '@/components/pages/LRF/OtpVerification/OtpVerificationForm';
-import { ZodFormProvider } from '@/contexts/ZodFormContext';
+import { useState } from 'react';
+import OtpVerificationLayout from '@/components/pages/LRF/OtpVerification/OtpVerificationLayout';
+import OtpVerificationSection from '@/components/pages/LRF/OtpVerification/OtpVerificationSection';
 import { verifyOtpSchema } from '@/schemas/verifyOtpSchema';
-import useSWRMutation from 'swr/mutation';
+import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { otpVerification } from '@/services/authService';
-import ResendOtp from '@/components/pages/LRF/OtpVerification/ResendOtp';
+import useSWRMutation from 'swr/mutation';
+import { otpVerification, forgotPassword } from '@/services/authService';
+import ROLE from '@/utils/constant/role';
+import { showToast } from '@/lib/toast';
 
-const OtpVerification = () => {
+export default function OtpVerification() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [isResending, setIsResending] = useState(false);
+  
+  const email = state?.email || '';
+  const role = state?.role || ROLE[0].value; // Default to student
+  
+  // Convert role value to string for easier handling
+  const roleString = role === ROLE[1].value ? 'teacher' : 'student';
+
   const { trigger } = useSWRMutation('/verify-otp', async (key, { arg }) => {
     return await otpVerification(JSON.stringify(arg));
   });
 
   async function onSubmit({ code }) {
-    const { meta } = await trigger({
-      email: state?.email,
-      otp: code,
-    });
-
-    if (meta.code) {
-      navigate('/reset-password', {
-        replace: true,
-        state: {
-          otp: code,
-          email: state?.email,
-        },
+    try {
+      const { meta } = await trigger({
+        email: email,
+        otp: code,
       });
+
+      if (meta.code) {
+        navigate('/reset-password', {
+          replace: true,
+          state: {
+            otp: code,
+            email: email,
+            role: role,
+          },
+        });
+      }
+    } catch (error) {
+      console.error('OTP verification error:', error);
+      showToast('error', 'Invalid OTP. Please check and try again.');
     }
   }
 
+  const handleResendOtp = async () => {
+    if (isResending) return;
+    
+    setIsResending(true);
+    try {
+      await forgotPassword(JSON.stringify({ email }));
+      showToast('success', 'OTP has been resent to your email');
+    } catch (error) {
+      console.error('Resend OTP error:', error);
+      showToast('error', 'Failed to resend OTP. Please try again.');
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   return (
-    <CardContainer>
-      <Background />
-
-      <Card>
-        <CardTitle
-          title='Reset Password'
-          subTitle={
-            <>
-              We sent a code to{' '}
-              <span className='font-bold text-gold'>{state?.email}</span>
-            </>
-          }
-        />
-        <ZodFormProvider schema={verifyOtpSchema} onSubmit={onSubmit}>
-          <OtpVerificationForm />
-        </ZodFormProvider>
-        <ResendOtp email={state?.email} />
-      </Card>
-    </CardContainer>
+    <ZodFormProvider schema={verifyOtpSchema} onSubmit={onSubmit}>
+      <OtpVerificationLayout
+        formComponent={OtpVerificationSection}
+        formProps={{
+          email,
+          role: roleString,
+          onResendOtp: handleResendOtp,
+          isResending,
+        }}
+      />
+    </ZodFormProvider>
   );
-};
-
-export default OtpVerification;
+}

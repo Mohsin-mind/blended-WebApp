@@ -12,6 +12,16 @@ export async function login(credentials) {
   return { data, meta };
 }
 
+// Signup
+export async function signup(userData) {
+  const { data, meta } = await handlePost(api, 'POST', '/signup', userData);
+  if (meta.code) {
+    setCookie('token', meta?.token);
+    setCookie('adminDetail', JSON.stringify(data));
+  }
+  return { data, meta };
+}
+
 // Forgot Password
 export async function forgotPassword(email) {
   return await handlePost(api, 'POST', '/forgot-password', email);

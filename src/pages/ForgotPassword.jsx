@@ -1,49 +1,56 @@
-import Background from '@/components/pages/LRF/Background';
-import Card from '@/components/pages/LRF/Card';
-import CardContainer from '@/components/pages/LRF/CardContainer';
-import CardTitle from '@/components/pages/LRF/CardTitle';
-import { ZodFormProvider } from '@/contexts/ZodFormContext';
-import useSWRMutation from 'swr/mutation';
-import { forgotPassword as forgotPasswordApi } from '@/services/authService';
-import { forgotPasswordSchema } from '@/schemas/forgotPasswordSchema';
+import { useLocation } from 'react-router-dom';
+import WebAppLoginLayout from '@/components/pages/LRF/Login/WebAppLoginLayout';
 import ForgotPasswordForm from '@/components/pages/LRF/ForgotPassword/ForgotPasswordForm';
+import { forgotPasswordSchema } from '@/schemas/forgotPasswordSchema';
+import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
+import useSWRMutation from 'swr/mutation';
+import ROLE from '@/utils/constant/role';
+import studentLoginFrame from '@/assets/images/svg/user_login_image.png';
+import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 
-const ForgotPassword = () => {
+export default function ForgotPassword() {
+  const location = useLocation();
   const navigate = useNavigate();
-  const { trigger } = useSWRMutation(
-    '/forgot-password',
-    async (key, { arg }) => {
-      return await forgotPasswordApi(JSON.stringify(arg));
-    }
-  );
+  
+  // Get role from location state, default to student
+  const role = location.state?.role || ROLE[0].value;
+  
+  // Select image based on role
+  const imageSrc = role === ROLE[1].value ? teacherLoginFrame : studentLoginFrame;
+  const altText = role === ROLE[1].value ? 'Teacher Forgot Password' : 'Student Forgot Password';
+
+  const { trigger } = useSWRMutation('/forgot-password', async (key, { arg }) => {
+    // TODO: Implement forgot password API call
+    console.log('Forgot password data:', arg);
+    return { success: true };
+  });
 
   async function onSubmit(data) {
-    const { meta } = await trigger(data);
-    if (meta.code) {
-      navigate('/otp-verification', {
-        replace: true,
-        state: {
-          email: data.email,
-        },
-      });
+    try {
+      const result = await trigger(data);
+      if (result.success) {
+        // Navigate to OTP verification with role context
+        navigate('/otp-verification', { 
+          state: { 
+            role,
+            email: data.email 
+          } 
+        });
+      }
+    } catch (error) {
+      console.error('Forgot password error:', error);
     }
   }
 
   return (
-    <CardContainer>
-      <Background />
-      <Card>
-        <CardTitle
-          title='Forgot Password?'
-          subTitle='No worries, we’ll send you reset instructions.'
-        />
-        <ZodFormProvider schema={forgotPasswordSchema} onSubmit={onSubmit}>
-          <ForgotPasswordForm />
-        </ZodFormProvider>
-      </Card>
-    </CardContainer>
+    <ZodFormProvider schema={forgotPasswordSchema} onSubmit={onSubmit}>
+      <WebAppLoginLayout 
+        formComponent={ForgotPasswordForm}
+        formProps={{ role }}
+        imageSrc={imageSrc}
+        altText={altText}
+      />
+    </ZodFormProvider>
   );
-};
-
-export default ForgotPassword;
+}
