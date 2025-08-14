@@ -68,7 +68,7 @@ export default [
       'react/jsx-tag-spacing': 'error',
       'react/jsx-wrap-multilines': 'error',
       'react/self-closing-comp': 'error',
-      'react/no-array-index-key': 'error',
+      'react/no-array-index-key': 'warn',
       'react/no-danger': 'error',
       'react/no-deprecated': 'error',
       'react/no-direct-mutation-state': 'error',

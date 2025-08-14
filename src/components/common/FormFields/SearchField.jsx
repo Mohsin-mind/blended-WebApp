@@ -11,7 +11,7 @@ function SearchField({
   disabled = false,
   ...props
 }) {
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter' && onSearch) {
       onSearch(e.target.value);
     }

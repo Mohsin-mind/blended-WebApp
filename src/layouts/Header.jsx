@@ -5,7 +5,8 @@ import SearchField from '@/components/common/FormFields/SearchField';
 export default function Header() {
   const [searchValue, setSearchValue] = useState('');
 
-  const handleSearch = (value) => {
+  const handleSearch = value => {
+    // eslint-disable-next-line no-console
     console.log('Searching for:', value);
     // Add search functionality here
   };
@@ -17,7 +18,7 @@ export default function Header() {
         <SearchField
           placeholder='Search...'
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={e => setSearchValue(e.target.value)}
           onSearch={handleSearch}
         />
       </div>
@@ -29,7 +30,7 @@ export default function Header() {
           <button className='w-10 h-10 bg-white border border-blended-gray_7 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors'>
             <img src={bellIcon} alt='Notifications' width={20} height={20} />
             {/* Static notification dot */}
-            <div className='absolute top-1 -right-0 w-2 h-2 bg-blended-blue_3 rounded-full'></div>
+            <div className='absolute top-1 -right-0 w-2 h-2 bg-blended-blue_3 rounded-full' />
           </button>
         </div>
       </div>

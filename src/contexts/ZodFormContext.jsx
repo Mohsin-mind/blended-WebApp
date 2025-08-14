@@ -13,17 +13,23 @@ export const ZodFormProvider = ({ schema, onSubmit, children, ...rest }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = methods.handleSubmit(async values => {
-    setLoading(true);
-    try {
-      await onSubmit(values);
-    } catch (err) {
+  const handleSubmit = methods.handleSubmit(
+    async values => {
+      setLoading(true);
+      try {
+        await onSubmit(values);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    errors => {
       // eslint-disable-next-line no-console
-      console.error(err.message);
-    } finally {
-      setLoading(false);
+      console.error('Zod validation errors:', errors);
     }
-  });
+  );
 
   return (
     <FormProvider {...methods}>

@@ -58,7 +58,7 @@ function InputField({
           autoFocus={type === 'text'}
           className={classNames(
             'w-full border border-blended-gray_2 bg-white px-4 py-3 text-base focus:outline-none',
-            'placeholder:text-blended-gray_3 font-medium',
+            'placeholder:text-blended-gray_3 placeholder:text-sm placeholder:font-normal',
             {
               'pl-10': icon,
               'pr-10': isShow,

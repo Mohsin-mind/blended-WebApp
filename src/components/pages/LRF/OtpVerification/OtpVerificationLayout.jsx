@@ -12,7 +12,8 @@ function OtpVerificationLayout({
 }) {
   // Select image based on role if not provided
   const role = formProps?.role || ROLE[0].value;
-  const defaultImageSrc = role === ROLE[1].value ? teacherLoginFrame : webappLoginFrame;
+  const defaultImageSrc =
+    role === ROLE[1].value ? teacherLoginFrame : webappLoginFrame;
   const finalImageSrc = imageSrc || defaultImageSrc;
   return (
     <div className='min-h-screen flex flex-col lg:flex-row'>

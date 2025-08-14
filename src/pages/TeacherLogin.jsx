@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import WebAppLoginLayout from '@/components/pages/LRF/Login/WebAppLoginLayout';
 import LoginFormSection from '@/components/pages/LRF/Login/LoginFormSection';
 import { loginSchema } from '@/schemas/loginSchema';
@@ -17,22 +16,22 @@ export default function TeacherLogin() {
 
   async function onSubmit(data) {
     const { meta } = await trigger(data);
-    if (meta.code) {
+    if (meta?.code) {
       navigate('/dashboard', { replace: true });
     }
   }
 
   return (
     <ZodFormProvider schema={loginSchema} onSubmit={onSubmit}>
-      <WebAppLoginLayout 
+      <WebAppLoginLayout
         formComponent={LoginFormSection}
         formProps={{
           toggleOptions: [{ label: 'LOGIN', value: 'login' }],
-          signupText: "Request Access",
-          role: ROLE[1].value // Teacher role (value: '2')
+          signupText: 'Request Access',
+          role: ROLE[1].value, // Teacher role (value: '2')
         }}
         imageSrc={teacherLoginFrame}
-        altText="Teacher Login"
+        altText='Teacher Login'
       />
     </ZodFormProvider>
   );

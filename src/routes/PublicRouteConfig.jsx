@@ -10,9 +10,21 @@ const PUBLIC_ROUTE_CONFIG = [
   {
     element: <PublicRouteValidate />,
     children: [
-      { path: '/', title: 'Student Login', element: <Navigate to='/student-login' replace /> },
-      { path: '/student-login', title: 'Student Login', element: <StudentLogin /> },
-      { path: '/teacher-login', title: 'Teacher Login', element: <TeacherLogin /> },
+      {
+        path: '/',
+        title: 'Student Login',
+        element: <Navigate to='/student-login' replace />,
+      },
+      {
+        path: '/student-login',
+        title: 'Student Login',
+        element: <StudentLogin />,
+      },
+      {
+        path: '/teacher-login',
+        title: 'Teacher Login',
+        element: <TeacherLogin />,
+      },
       {
         path: '/forgot-password',
         title: 'Forgot Password',

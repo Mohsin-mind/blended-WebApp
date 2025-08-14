@@ -8,7 +8,7 @@ import GoogleButton from '@/components/common/FormFields/GoogleButton';
 import ROLE from '@/utils/constant/role';
 import LRFHeaderSection from './LRFHeaderSection';
 
-function LoginFormSection({ 
+function LoginFormSection({
   toggleOptions = [
     { label: 'LOGIN', value: 'login' },
     { label: 'SIGNUP', value: 'signup' },
@@ -22,14 +22,12 @@ function LoginFormSection({
 
   // Sync with parent state
   useEffect(() => {
-    console.log('Parent form changed:', activeForm, 'Current tab:', activeTab);
     if (activeForm && activeForm !== activeTab) {
       setActiveTab(activeForm);
     }
-  }, [activeForm]);
+  }, [activeForm, activeTab]);
 
-  const handleTabChange = (newTab) => {
-    console.log('Tab change requested:', newTab, 'Current tab:', activeTab);
+  const handleTabChange = newTab => {
     if (newTab !== activeTab) {
       setActiveTab(newTab);
       if (onFormChange) {
@@ -73,11 +71,11 @@ function LoginFormSection({
       <div className='pt-4'>
         <Button type='submit' title='Login' />
       </div>
-      
+
       {/* Sign Up link */}
       <div className='flex justify-center mt-3'>
         <span className='text-blended-gray_5 text-base font-normal mr-1'>
-          Don't have an Account?
+          Don&apos;t have an Account?
         </span>
         <button
           type='button'
@@ -129,7 +127,7 @@ function LoginFormSection({
       <div className='pt-4'>
         <Button type='submit' title='Sign Up' />
       </div>
-      
+
       {/* Login link */}
       <div className='flex justify-center mt-3'>
         <span className='text-blended-gray_5 text-base font-normal mr-1'>
@@ -149,10 +147,10 @@ function LoginFormSection({
   return (
     <>
       {/* Top Section - Logo */}
-      <LRFHeaderSection/>
+      <LRFHeaderSection />
 
-      {/* Tab Switcher - Absolutely positioned between sections */}
-      <div className='absolute top-[20%] lg:top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 shadow-lg rounded-full'>
+      {/* Tab Switcher - Responsive positioning: flex on mobile, absolute on desktop */}
+      <div className='flex justify-center mb-6 lg:absolute lg:top-[20%] lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:z-10 lg:shadow-lg lg:rounded-full lg:mb-0'>
         <ToggleTab
           options={toggleOptions}
           activeOption={activeTab}
@@ -175,11 +173,13 @@ function LoginFormSection({
             {role === ROLE[0].value && (
               <>
                 <div className='flex items-center mt-6 mb-4'>
-                  <div className='flex-1 h-px bg-[#BDC2CC]'></div>
+                  <div className='flex-1 h-px bg-blended-gray_9' />
                   <span className='px-4 text-blended-gray_5 text-sm font-normal'>
-                    {activeTab === 'login' ? 'Or Continue With' : 'Or Continue With'}
+                    {activeTab === 'login'
+                      ? 'Or Continue With'
+                      : 'Or Continue With'}
                   </span>
-                  <div className='flex-1 h-px bg-[#BDC2CC]'></div>
+                  <div className='flex-1 h-px bg-blended-gray_9' />
                 </div>
 
                 {/* Google Button */}

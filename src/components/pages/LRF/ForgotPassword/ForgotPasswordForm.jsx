@@ -1,14 +1,13 @@
 import InputField from '@/components/common/FormFields/InputField';
 import Button from '@/components/common/FormFields/Button';
-import ROLE from '@/utils/constant/role';
 import LRFHeaderSection from '../Login/LRFHeaderSection';
 import LRFFooterSection from '../Login/LRFFooterSection';
 
-function ForgotPasswordForm({ }) {
+function ForgotPasswordForm() {
   return (
     <>
       {/* Top Section - Logo */}
-        <LRFHeaderSection/>
+      <LRFHeaderSection />
 
       {/* Bottom Section - Form */}
       <div className='flex-1 bg-blended-gray_6 flex justify-center px-6 pt-8 lg:pt-12 pb-6 lg:pb-12'>
@@ -37,7 +36,7 @@ function ForgotPasswordForm({ }) {
           </div>
 
           {/* Footer Links */}
-          <LRFFooterSection/>
+          <LRFFooterSection />
         </div>
       </div>
     </>

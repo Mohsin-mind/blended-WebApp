@@ -5,7 +5,7 @@ import { handlePost } from './handlePost';
 // Login
 export async function login(credentials) {
   const { data, meta } = await handlePost(api, 'POST', '/login', credentials);
-  if (meta.code) {
+  if (meta?.code) {
     setCookie('token', meta?.token);
     setCookie('adminDetail', JSON.stringify(data));
   }
@@ -15,7 +15,7 @@ export async function login(credentials) {
 // Signup
 export async function signup(userData) {
   const { data, meta } = await handlePost(api, 'POST', '/signup', userData);
-  if (meta.code) {
+  if (meta?.code) {
     setCookie('token', meta?.token);
     setCookie('adminDetail', JSON.stringify(data));
   }
@@ -62,7 +62,7 @@ export async function logout() {
   }*/
   setCookie('token', '', -1);
   setCookie('adminDetail', '', -1);
-  window.location.href = '/login';
+  window.location.href = '/student-login';
 }
 
 // Check if user is authenticated

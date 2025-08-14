@@ -1,11 +1,15 @@
-import React from 'react'
+// React import removed as it's not used
 import PropTypes from 'prop-types';
 
 const GoogleButton = ({ mode = 'login' }) => {
-  const buttonText = mode === 'signup' ? 'Sign Up With Google' : 'Login Via Google';
-  
+  const buttonText =
+    mode === 'signup' ? 'Sign Up With Google' : 'Login Via Google';
+
   return (
-    <button className='w-full bg-white/60 shadow-lg px-4 py-3 flex items-center justify-center space-x-3 hover:bg-gray-50 transition-colors mb-4' type='button'>
+    <button
+      className='w-full bg-white/60 shadow-lg px-4 py-3 flex items-center justify-center space-x-3 hover:bg-gray-50 transition-colors mb-4'
+      type='button'
+    >
       <svg className='w-5 h-5' viewBox='0 0 24 24'>
         <path
           fill='#4285F4'
@@ -29,10 +33,10 @@ const GoogleButton = ({ mode = 'login' }) => {
       </span>
     </button>
   );
-}
+};
 
 GoogleButton.propTypes = {
   mode: PropTypes.oneOf(['login', 'signup']),
 };
 
-export default GoogleButton
+export default GoogleButton;

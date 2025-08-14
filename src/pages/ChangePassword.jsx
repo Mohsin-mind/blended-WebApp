@@ -18,7 +18,7 @@ export default function ChangePassword() {
       new_password: data.new_password,
     });
 
-    if (meta.code) {
+    if (meta?.code) {
       logout();
     }
   }

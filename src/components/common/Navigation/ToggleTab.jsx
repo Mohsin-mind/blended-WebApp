@@ -69,7 +69,7 @@ const ToggleTab = ({
   return (
     <div
       className={clsx(
-        'inline-flex bg-white rounded-full shadow-sm',
+        'inline-flex bg-white rounded-full drop-shadow-md',
         options.length === 1 ? 'px-8 py-2' : 'p-2',
         className
       )}

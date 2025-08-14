@@ -14,8 +14,8 @@ function WebAppLoginLayout({
     <div className='min-h-screen flex flex-col lg:flex-row'>
       {/* Left Column - Login Form */}
       <div className='flex-1 w-full flex flex-col h-screen lg:h-screen relative'>
-        <FormComponent 
-          {...formProps} 
+        <FormComponent
+          {...formProps}
           onFormChange={onFormChange}
           activeForm={activeForm}
         />

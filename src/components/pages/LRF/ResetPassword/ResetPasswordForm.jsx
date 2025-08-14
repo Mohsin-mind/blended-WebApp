@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import InputField from '@/components/common/FormFields/InputField';
@@ -8,13 +7,8 @@ import { useFormContext } from 'react-hook-form';
 import smallArrowLeft from '@/assets/images/svg/small-arrow-left.svg';
 import checkCircle from '@/assets/images/svg/check-circle.svg';
 
-function ResetPasswordSection({ 
-  role = 'student',
-}) {
-  const {
-    watch,
-    formState: { errors },
-  } = useFormContext();
+function ResetPasswordForm({ role = 'student' }) {
+  const { watch } = useFormContext();
 
   const password = watch('password') || '';
 
@@ -25,7 +19,7 @@ function ResetPasswordSection({
   return (
     <>
       {/* Top Section - Logo */}
-      <LRFHeaderSection/>
+      <LRFHeaderSection />
 
       {/* Bottom Section - Form */}
       <div className='flex-1 bg-blended-gray_6 flex justify-center px-6 pt-8 lg:pt-20 pb-6 lg:pb-12'>
@@ -38,7 +32,8 @@ function ResetPasswordSection({
                 Set a New Password
               </h1>
               <p className='text-blended-gray_8 text-sm lg:text-base font-thin'>
-                Your New Password must be different from your previously used passwords
+                Your New Password must be different from your previously used
+                passwords
               </p>
             </div>
 
@@ -68,16 +63,28 @@ function ResetPasswordSection({
               <div className='space-y-2'>
                 <div className='flex items-center text-blended-gray_5'>
                   {hasMinLength && (
-                    <img src={checkCircle} className="w-4 h-4 mr-3" alt="check" />
+                    <img
+                      src={checkCircle}
+                      className='w-4 h-4 mr-3'
+                      alt='check'
+                    />
                   )}
-                  <span className='text-sm font-medium'>Must be at least 8 Characters</span>
+                  <span className='text-sm font-medium'>
+                    Must be at least 8 Characters
+                  </span>
                 </div>
-                
+
                 <div className='flex items-center text-blended-gray_5'>
                   {hasSpecialChar && (
-                    <img src={checkCircle} className="w-4 h-4 mr-3" alt="check" />
+                    <img
+                      src={checkCircle}
+                      className='w-4 h-4 mr-3'
+                      alt='check'
+                    />
                   )}
-                  <span className='text-sm font-medium'>Must contain one special character</span>
+                  <span className='text-sm font-medium'>
+                    Must contain one special character
+                  </span>
                 </div>
               </div>
             </div>
@@ -90,8 +97,10 @@ function ResetPasswordSection({
 
           {/* Footer Links */}
           <div className='text-center mt-6 lg:mt-auto pt-6 lg:pt-8 mb-6 lg:mb-10 flex justify-center items-center'>
-            <img src={smallArrowLeft} className="h-3 w-3 mr-2" alt='go back'/>
-            <span className='text-blended-gray_5 text-sm lg:text-base font-normal mr-1'>Back to</span>
+            <img src={smallArrowLeft} className='h-3 w-3 mr-2' alt='go back' />
+            <span className='text-blended-gray_5 text-sm lg:text-base font-normal mr-1'>
+              Back to
+            </span>
             <NavLink
               to={role === 'teacher' ? '/teacher-login' : '/student-login'}
               className='text-blended-blue_7 text-sm lg:text-base font-normal hover:text-blended-blue_3 transition-colors underline flex items-center justify-center'
@@ -105,8 +114,8 @@ function ResetPasswordSection({
   );
 }
 
-ResetPasswordSection.propTypes = {
+ResetPasswordForm.propTypes = {
   role: PropTypes.oneOf(['student', 'teacher']),
 };
 
-export default ResetPasswordSection;
+export default ResetPasswordForm;

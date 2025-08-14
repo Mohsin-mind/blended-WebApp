@@ -1,5 +1,5 @@
 import ResetPasswordLayout from '@/components/pages/LRF/ResetPassword/ResetPasswordLayout';
-import ResetPasswordSection from '@/components/pages/LRF/ResetPassword/ResetPasswordSection';
+import ResetPasswordForm from '@/components/pages/LRF/ResetPassword/ResetPasswordForm';
 import ResetPasswordSuccessSection from '@/components/pages/LRF/ResetPassword/ResetPasswordSuccessSection';
 import { resetPasswordSchema } from '@/schemas/resetPasswordSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
@@ -14,11 +14,11 @@ export default function ResetPassword() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const email = state?.email || '';
   const otp = state?.otp || '';
   const role = state?.role || ROLE[0].value;
-  
+
   // Convert role value to string for easier handling
   const roleString = role === ROLE[1].value ? 'teacher' : 'student';
 
@@ -31,26 +31,26 @@ export default function ResetPassword() {
 
   async function onSubmit(data) {
     try {
-      const { meta } = await trigger({ 
-        password: data.password, 
+      const { meta } = await trigger({
+        password: data.password,
         email,
         otp,
       });
-      
-      if (meta.code) {
+
+      if (meta?.code) {
         showToast('success', 'Password reset successful!');
         setIsSuccess(true);
       }
     } catch (error) {
-      console.error('Reset password error:', error);
-      showToast('error', 'Failed to reset password. Please try again.');
+      if (error) {
+        showToast('error', 'Failed to reset password. Please try again.');
+      }
     }
   }
 
   const handleLoginClick = () => {
-    console.log('handleLoginClick called, roleString:', roleString);
-    const targetRoute = roleString === 'teacher' ? '/teacher-login' : '/student-login';
-    console.log('Navigating to:', targetRoute);
+    const targetRoute =
+      roleString === 'teacher' ? '/teacher-login' : '/student-login';
     navigate(targetRoute, { replace: true });
   };
 
@@ -69,7 +69,7 @@ export default function ResetPassword() {
   return (
     <ZodFormProvider schema={resetPasswordSchema} onSubmit={onSubmit}>
       <ResetPasswordLayout
-        formComponent={ResetPasswordSection}
+        formComponent={ResetPasswordForm}
         formProps={{
           role: roleString,
         }}

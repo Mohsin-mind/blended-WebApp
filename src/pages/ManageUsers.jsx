@@ -94,7 +94,7 @@ function ManageUsers() {
 
   async function onToggle(arg) {
     const { meta } = await trigger(arg);
-    if (meta.code) {
+    if (meta?.code) {
       mutate(queryKey);
     }
   }

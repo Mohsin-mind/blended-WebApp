@@ -17,15 +17,17 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
   const menuItems = [
     {
       section: 'Main Menu',
-      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Main Menu')
+      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Main Menu'),
     },
     {
       section: 'Communication',
-      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication')
+      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication'),
     },
     {
       section: 'Settings & Support',
-      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Settings & Support')
+      items: SIDE_BAR_ROUTE.filter(
+        route => route.section === 'Settings & Support'
+      ),
     },
   ];
 
@@ -44,10 +46,10 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
   };
 
   return (
-    <aside
-      className={`bg-gradient-to-r from-blended-blue_1 to-blended-blue_2 h-screen transition-all duration-300 flex flex-col w-full`}
-    >
-      <div className={`h-16 flex items-center border-b border-white/20 flex-shrink-0 ${isCollapsed ? 'justify-center px-2' : 'justify-between px-6'}`}>
+    <aside className='bg-gradient-to-r from-blended-blue_1 to-blended-blue_2 h-screen transition-all duration-300 flex flex-col w-full'>
+      <div
+        className={`h-16 flex items-center border-b border-white/20 flex-shrink-0 ${isCollapsed ? 'justify-center px-2' : 'justify-between px-6'}`}
+      >
         <img
           src={logo}
           alt='Blended-logo'
@@ -64,7 +66,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       </div>
       <nav className='overflow-y-auto flex-1'>
         {menuItems.map((section, sectionIndex) => (
-          <div key={sectionIndex} className='mb-6'>
+          <div key={`section-${section.section}`} className='mb-6'>
             {sectionIndex > 0 && (
               <div
                 className={`border-t border-white/20 mb-6 ${isCollapsed ? 'hidden' : 'block'}`}
@@ -80,20 +82,17 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
                 {section.section}
               </h3>
               <ul className='space-y-1'>
-                {section.items.map((item, itemIndex) => (
-                  <li key={itemIndex}>
+                {section.items.map(item => (
+                  <li key={`${section.section}-${item.path}`}>
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
                         `relative ${linkClassName({ isActive })} ${isCollapsed ? 'justify-center' : 'px-4'}`
                       }
                     >
-                      {false && (
-                        <div className='absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-10 bg-blended-blue_3 rounded-l-full' />
-                      )}
-                      <div
-                        className={`w-8 h-8 rounded flex items-center justify-center flex-shrink-0`}
-                      >
+                      {/* Active indicator - currently disabled */}
+                      {/* <div className='absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-10 bg-blended-blue_3 rounded-l-full' /> */}
+                      <div className='w-8 h-8 rounded flex items-center justify-center flex-shrink-0'>
                         <img
                           src={item.icon}
                           alt={item.title}
@@ -128,7 +127,10 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
             </p>
           </div>
         </div>
-        <button className='w-full p-3 rounded transition-colors flex justify-start items-center gap-3 text-blended-gray_1 font-normal hover:bg-white/10' onClick={handleLogout}>
+        <button
+          className='w-full p-3 rounded transition-colors flex justify-start items-center gap-3 text-blended-gray_1 font-normal hover:bg-white/10'
+          onClick={handleLogout}
+        >
           <img
             src={logoutIcon}
             alt='Logout'

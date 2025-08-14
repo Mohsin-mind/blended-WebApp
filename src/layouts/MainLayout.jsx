@@ -10,8 +10,13 @@ export default function MainLayout() {
     <div className='flex h-screen w-screen overflow-hidden bg-grayLight dark:bg-dark-grayLight font-sans text-black dark:text-dark-black'>
       {/* <Header /> */}
       {/* <div className='flex flex-1'> */}
-      <aside className={`flex-shrink-0 bg-black text-white transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-80'}`}>
-        <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={setIsSidebarCollapsed} />
+      <aside
+        className={`flex-shrink-0 bg-black text-white transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-80'}`}
+      >
+        <Sidebar
+          isCollapsed={isSidebarCollapsed}
+          setIsCollapsed={setIsSidebarCollapsed}
+        />
       </aside>
       <div className='flex flex-col flex-1 min-w-0'>
         {/* Header - fixed height */}

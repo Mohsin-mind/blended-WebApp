@@ -2,22 +2,17 @@ import PropTypes from 'prop-types';
 import Button from '@/components/common/FormFields/Button';
 import LRFHeaderSection from '../Login/LRFHeaderSection';
 
-function ResetPasswordSuccessSection({ 
-  role = 'student',
-  onLoginClick,
-}) {
+function ResetPasswordSuccessSection({ onLoginClick }) {
   const handleLoginClick = () => {
     if (onLoginClick) {
       onLoginClick();
-    } else {
-      console.error('onLoginClick function is not provided');
     }
   };
 
   return (
     <>
       {/* Top Section - Logo */}
-      <LRFHeaderSection/>
+      <LRFHeaderSection />
 
       {/* Bottom Section - Success Message */}
       <div className='flex-1 bg-blended-gray_6 flex justify-center px-6 pt-4 lg:pt-12 pb-6 lg:pb-12'>
@@ -30,17 +25,14 @@ function ResetPasswordSuccessSection({
                 Password Reset Successful
               </h1>
               <p className='text-blended-gray_8 text-sm font-normal text-center w-full lg:w-[80%]'>
-                You've successfully created a New Password, Click below to Login
+                You&apos;ve successfully created a New Password, Click below to
+                Login
               </p>
             </div>
 
             {/* Login Button */}
             <div className='w-full'>
-              <Button 
-                type='button' 
-                title='Login' 
-                onClick={handleLoginClick}
-              />
+              <Button type='button' title='Login' onClick={handleLoginClick} />
             </div>
           </div>
         </div>
@@ -50,7 +42,6 @@ function ResetPasswordSuccessSection({
 }
 
 ResetPasswordSuccessSection.propTypes = {
-  role: PropTypes.oneOf(['student', 'teacher']),
   onLoginClick: PropTypes.func,
 };
 
