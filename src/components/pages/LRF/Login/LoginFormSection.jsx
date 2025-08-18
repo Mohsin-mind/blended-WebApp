@@ -149,22 +149,26 @@ function LoginFormSection({
       {/* Top Section - Logo */}
       <LRFHeaderSection />
 
-      {/* Tab Switcher - Responsive positioning: flex on mobile, absolute on desktop */}
-      <div className='flex justify-center mb-6 lg:absolute lg:top-[20%] lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:z-10 lg:shadow-lg lg:rounded-full lg:mb-0'>
-        <ToggleTab
-          options={toggleOptions}
-          activeOption={activeTab}
-          onOptionChange={handleTabChange}
-          behavior='switch'
-        />
-      </div>
-
       {/* Bottom Section - Form */}
-      <div className='flex-1 bg-blended-gray_6 flex justify-center px-6 pt-16 lg:pt-20 pb-6 lg:pb-12'>
+      <div className='flex-1 bg-blended-gray_6 flex justify-center px-6 pt-16 lg:pt-20 pb-6 lg:pb-12 relative'>
+        {/* Tab Switcher - Positioned relative to form container */}
+        <div className='absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 shadow-lg rounded-full'>
+          <ToggleTab
+            options={toggleOptions}
+            activeOption={activeTab}
+            onOptionChange={handleTabChange}
+            behavior='switch'
+          />
+        </div>
+
         <div className='w-full max-w-md flex flex-col justify-center'>
-          {/* Form Fields */}
-          <div className='flex-1'>
-            {activeTab === 'login' ? renderLoginForm() : renderSignupForm()}
+          {/* Form Fields - Fixed height container to prevent layout shifts */}
+          <div className='h-[400px] flex flex-col'>
+            <div
+              className={`flex-1 ${activeTab === 'signup' ? 'overflow-y-auto pr-2' : 'flex flex-col justify-center'}`}
+            >
+              {activeTab === 'login' ? renderLoginForm() : renderSignupForm()}
+            </div>
           </div>
 
           {/* Footer Links - Now at the bottom */}

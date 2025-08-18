@@ -25,8 +25,8 @@ function ForgotPasswordLayout({
 
       {/* Right Column - Image */}
       <div className='flex-1 bg-blended-gray_4 h-64 lg:h-screen lg:w-auto'>
-        <ImageSection 
-          imageSrc={finalImageSrc} 
+        <ImageSection
+          imageSrc={finalImageSrc}
           altText={altText}
           title='Welcome Back, Dhruvin Dave'
           subtitle="Explore live courses led by MIT faculty. We'll guide you in selecting your ideal starting point—whether it's building foundations or diving into hands-on projects."

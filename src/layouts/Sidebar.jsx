@@ -83,11 +83,15 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
               </h3>
               <ul className='space-y-1'>
                 {section.items.map(item => (
-                  <li key={`${section.section}-${item.path}`}>
+                  <li key={`${section?.section}-${item?.path}`}>
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
-                        `relative ${linkClassName({ isActive })} ${isCollapsed ? 'justify-center' : 'px-4'}`
+                        `relative ${linkClassName({ isActive })} ${isCollapsed ? 'justify-center' : 'px-4'} ${
+                          isActive
+                            ? 'after:content-[""] after:absolute after:right-0 after:top-1/2 after:transform after:-translate-y-1/2 after:w-2 after:h-10 after:bg-blended-blue_3 after:rounded-l-full'
+                            : ''
+                        }`
                       }
                     >
                       {/* Active indicator - currently disabled */}

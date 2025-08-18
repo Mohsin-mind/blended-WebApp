@@ -25,21 +25,24 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #cbb07b;
+  background: #6CA7DA;
   border-radius: 14px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #9e885b;
+  background: #4E8CC8; /* Darker blue for hover */
 }
 
+/* Text Selection */
 ::-moz-selection {
-  background: #cbb07b83;
+  background: #6CA7DA66;
+  color: #fff;
 }
 
 ::selection {
-  background: #cbb07b83;
+  background: #6CA7DA66;
+  color: #fff;
 }
 
 /* Base font styles */

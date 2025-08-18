@@ -15,7 +15,8 @@ function WebAppLoginLayout({
     if (activeForm === 'signup') {
       return {
         title: 'Ready to Start?',
-        subtitle: 'We offer the best Blended Learning experience to apply what you have learned.',
+        subtitle:
+          'We offer the best Blended Learning experience to apply what you have learned.',
         titleClass: 'text-right',
         subtitleClass: 'text-right max-w-[19rem] self-end',
       };
@@ -23,21 +24,29 @@ function WebAppLoginLayout({
     // Default login text
     return {
       title: 'Welcome Back, Dhruvin Dave',
-      subtitle: 'Explore live courses led by MIT faculty. We\'ll guide you in selecting your ideal starting point—whether it\'s building foundations or diving into hands-on projects.',
+      subtitle:
+        "Explore live courses led by MIT faculty. We'll guide you in selecting your ideal starting point—whether it's building foundations or diving into hands-on projects.",
       titleClass: 'text-left',
-      subtitleClass: 'text-left'
+      subtitleClass: 'text-left',
     };
   };
 
   // Use dynamic text only if activeForm is provided and no explicit title/subtitle props
-  const textContent = activeForm ? getTextContent() : {
-    title: '',
-    subtitle: '',
-    titleClass: '',
-    subtitleClass: ''
-  };
+  const textContent = activeForm
+    ? getTextContent()
+    : {
+        title: '',
+        subtitle: '',
+        titleClass: '',
+        subtitleClass: '',
+      };
 
-  const { title: finalTitle, subtitle: finalSubtitle, titleClass, subtitleClass } = textContent;
+  const {
+    title: finalTitle,
+    subtitle: finalSubtitle,
+    titleClass,
+    subtitleClass,
+  } = textContent;
 
   return (
     <div className='min-h-screen flex flex-col lg:flex-row'>
@@ -52,8 +61,8 @@ function WebAppLoginLayout({
 
       {/* Right Column - Image */}
       <div className='flex-1 bg-blended-gray_4 h-64 lg:h-screen lg:w-auto'>
-        <ImageSection 
-          imageSrc={imageSrc} 
+        <ImageSection
+          imageSrc={imageSrc}
           altText={altText}
           title={finalTitle}
           subtitle={finalSubtitle}
