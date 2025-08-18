@@ -32,6 +32,7 @@ export default function TeacherLogin() {
         }}
         imageSrc={teacherLoginFrame}
         altText='Teacher Login'
+        activeForm='login'
       />
     </ZodFormProvider>
   );

@@ -48,6 +48,7 @@ export default {
           blue_5: '#D5E5F3',
           blue_6: '#050B17',
           blue_7: '#071F4A',
+          blue_8: '#E6E9ED',
           gray_1: '#B4B6B9',
           gray_2: '#E5E7EB',
           gray_3: '#9CA3AF',

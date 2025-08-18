@@ -4,9 +4,9 @@ import webappLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import ROLE from '@/utils/constant/role';
 
-function OtpVerificationLayout({
+function ForgotPasswordLayout({
   imageSrc,
-  altText = 'OTP Verification',
+  altText = 'Forgot Password',
   formComponent: FormComponent,
   formProps = {},
 }) {
@@ -15,9 +15,10 @@ function OtpVerificationLayout({
   const defaultImageSrc =
     role === ROLE[1].value ? teacherLoginFrame : webappLoginFrame;
   const finalImageSrc = imageSrc || defaultImageSrc;
+
   return (
     <div className='min-h-screen flex flex-col lg:flex-row'>
-      {/* Left Column - OTP Form */}
+      {/* Left Column - Forgot Password Form */}
       <div className='flex-1 w-full flex flex-col h-screen lg:h-screen relative'>
         <FormComponent {...formProps} />
       </div>
@@ -37,11 +38,11 @@ function OtpVerificationLayout({
   );
 }
 
-OtpVerificationLayout.propTypes = {
+ForgotPasswordLayout.propTypes = {
   imageSrc: PropTypes.string,
   altText: PropTypes.string,
   formComponent: PropTypes.elementType.isRequired,
   formProps: PropTypes.object,
 };
 
-export default OtpVerificationLayout;
+export default ForgotPasswordLayout;

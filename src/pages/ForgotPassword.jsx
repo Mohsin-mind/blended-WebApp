@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import WebAppLoginLayout from '@/components/pages/LRF/Login/WebAppLoginLayout';
+import ForgotPasswordLayout from '@/components/pages/LRF/ForgotPassword/ForgotPasswordLayout';
 import ForgotPasswordForm from '@/components/pages/LRF/ForgotPassword/ForgotPasswordForm';
 import { forgotPasswordSchema } from '@/schemas/forgotPasswordSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
 import { forgotPassword as forgotPasswordApi } from '@/services/authService';
 import ROLE from '@/utils/constant/role';
-import studentLoginFrame from '@/assets/images/svg/user_login_image.png';
+import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import { showToast } from '@/lib/toast';
 
@@ -54,7 +54,7 @@ export default function ForgotPassword() {
 
   return (
     <ZodFormProvider schema={forgotPasswordSchema} onSubmit={onSubmit}>
-      <WebAppLoginLayout
+      <ForgotPasswordLayout
         formComponent={ForgotPasswordForm}
         formProps={{ role }}
         imageSrc={imageSrc}

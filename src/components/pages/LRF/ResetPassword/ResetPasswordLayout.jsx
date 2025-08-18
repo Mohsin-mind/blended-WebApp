@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ImageSection from '../Login/ImageSection.jsx';
-import webappLoginFrame from '@/assets/images/svg/user_login_image.png';
+import webappLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import ROLE from '@/utils/constant/role';
 
@@ -25,7 +25,14 @@ function ResetPasswordLayout({
 
       {/* Right Column - Image */}
       <div className='flex-1 bg-blended-gray_4 h-64 lg:h-screen lg:w-auto'>
-        <ImageSection imageSrc={finalImageSrc} altText={altText} />
+        <ImageSection 
+          imageSrc={finalImageSrc} 
+          altText={altText}
+          title='Welcome Back, Dhruvin Dave'
+          subtitle="Explore live courses led by MIT faculty. We'll guide you in selecting your ideal starting point—whether it's building foundations or diving into hands-on projects."
+          titleClass='text-left'
+          subtitleClass='text-left'
+        />
       </div>
     </div>
   );
