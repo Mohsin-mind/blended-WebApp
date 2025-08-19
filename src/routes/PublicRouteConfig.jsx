@@ -2,6 +2,7 @@ import StudentLogin from '@/pages/StudentLogin';
 import TeacherLogin from '@/pages/TeacherLogin';
 import PublicRouteValidate from './PublicRouteValidate';
 import OtpVerification from '@/pages/OtpVerification';
+import EmailVerification from '@/pages/EmailVerification';
 import { Navigate } from 'react-router-dom';
 import ResetPassword from '@/pages/ResetPassword';
 import ForgotPassword from '@/pages/ForgotPassword';
@@ -13,15 +14,15 @@ const PUBLIC_ROUTE_CONFIG = [
       {
         path: '/',
         title: 'Student Login',
-        element: <Navigate to='/student-login' replace />,
+        element: <Navigate to='/student/login' replace />,
       },
       {
-        path: '/student-login',
+        path: '/student/login',
         title: 'Student Login',
         element: <StudentLogin />,
       },
       {
-        path: '/teacher-login',
+        path: '/teacher/login',
         title: 'Teacher Login',
         element: <TeacherLogin />,
       },
@@ -39,6 +40,11 @@ const PUBLIC_ROUTE_CONFIG = [
         path: '/reset-password',
         title: 'Reset Password',
         element: <ResetPassword />,
+      },
+      {
+        path: '/verify-email',
+        title: 'Email Verification',
+        element: <EmailVerification />,
       },
 
       // Add more public routes here

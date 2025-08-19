@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getCookie, setCookie } from '@/utils/helper';
 import CONST from '@/utils/constant';
 import { showToast } from '@/lib/toast';
-import { isAuthenticated } from './authService';
+import { isAuthenticated, getToken, getTokenFromUrl } from './authService';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -16,7 +16,8 @@ const api = axios.create({
 // Request interceptor to attach auth token
 api.interceptors.request.use(
   config => {
-    const token = getCookie('token');
+    // Try to get token from URL first, then fallback to role-based token
+    const token = getTokenFromUrl(window.location.pathname) || getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -35,8 +36,13 @@ function handleBadRequest(message) {
 
 function handleUnauthorized(message) {
   const isAuth = isAuthenticated();
+  // Clear all possible auth cookies
   setCookie('token', '', -1);
   setCookie('admin', '', -1);
+  setCookie('student_token', '', -1);
+  setCookie('student_detail', '', -1);
+  setCookie('teacher_token', '', -1);
+  setCookie('teacher_detail', '', -1);
   showToast('error', message || CONST.HTTP_ERROR_MSG.UNAUTHORIZED);
   if (isAuth) {
     window.location.reload(true);

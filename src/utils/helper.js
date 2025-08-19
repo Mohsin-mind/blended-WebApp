@@ -44,3 +44,9 @@ export function replacePlaceholder(string, prefix, toReplace) {
 export const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 };
+
+// Generate email verification URL
+export function generateEmailVerificationUrl(token) {
+  const baseUrl = window.location.origin;
+  return `${baseUrl}/verify-email?token=${token}`;
+}

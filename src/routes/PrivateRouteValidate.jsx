@@ -1,6 +1,31 @@
-import { isAuthenticated } from '@/services/authService';
-import { Navigate, Outlet } from 'react-router-dom';
+import { isAuthenticated, getUserRole, getLoginPageUrl, getDashboardUrl } from '@/services/authService';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 export default function PrivateRouteValidate() {
-  return isAuthenticated() ? <Outlet /> : <Navigate to='/login' replace />;
+  const location = useLocation();
+  const currentPath = location.pathname;
+  
+  if (!isAuthenticated()) {
+    // Get user role to determine appropriate login page
+    const userRole = getUserRole();
+    const loginPageUrl = getLoginPageUrl(userRole);
+    
+    return <Navigate to={loginPageUrl} replace />;
+  }
+  
+  // Role-based route protection
+  const userRole = getUserRole();
+  
+  // Check if user is trying to access routes they shouldn't have access to
+  if (userRole === 'STUDENT' && currentPath.startsWith('/teacher/')) {
+    // Student trying to access teacher routes
+    return <Navigate to={getDashboardUrl('STUDENT')} replace />;
+  }
+  
+  if (userRole === 'TEACHER' && currentPath.startsWith('/student/')) {
+    // Teacher trying to access student routes
+    return <Navigate to={getDashboardUrl('TEACHER')} replace />;
+  }
+  
+  return <Outlet />;
 }

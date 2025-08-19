@@ -7,6 +7,8 @@ import useSWRMutation from 'swr/mutation';
 import { login as loginApi } from '@/services/authService';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import ROLE from '@/utils/constant/role';
+import { showToast } from '@/lib/toast';
+import { setCookie } from '@/utils/helper';
 
 export default function TeacherLogin() {
   const navigate = useNavigate();
@@ -15,9 +17,19 @@ export default function TeacherLogin() {
   });
 
   async function onSubmit(data) {
-    const { meta } = await trigger(data);
-    if (meta?.code) {
-      navigate('/dashboard', { replace: true });
+    const { meta , data: responseData} = await trigger(data);
+    if (meta?.code && responseData?.token) {
+      // Validate that the user is actually a teacher
+      if (responseData.user?.role !== 'TEACHER') {
+        showToast('error', 'This login page is for teachers only. Please use the student login page.');
+        return;
+      }
+      
+      setCookie('teacher_token', responseData?.token);
+      setCookie('teacher_detail', JSON.stringify(responseData));
+      navigate('/teacher/dashboard', { replace: true });
+    } else {
+      showToast('error', 'Invalid credentials');
     }
   }
 

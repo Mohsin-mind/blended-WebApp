@@ -102,7 +102,7 @@ function ResetPasswordForm({ role = 'student' }) {
               Back to
             </span>
             <NavLink
-              to={role === 'teacher' ? '/teacher-login' : '/student-login'}
+              to={role === 'teacher' ? '/teacher/login' : '/student/login'}
               className='text-blended-blue_7 text-sm lg:text-base font-normal hover:text-blended-blue_3 transition-colors underline flex items-center justify-center'
             >
               Login

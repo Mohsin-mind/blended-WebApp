@@ -3,33 +3,119 @@ import { NavLink } from 'react-router-dom';
 import logo from '@/assets/images/svg/BlendedED_Logo.svg';
 import toggleIcon from '@/assets/images/svg/toggle_sidebar.svg';
 import logoutIcon from '@/assets/images/svg/login.svg';
-import { setCookie } from '@/utils/helper';
+import { getCookie } from '@/utils/helper';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '@/services/authService';
 
 export default function Sidebar({ isCollapsed, setIsCollapsed }) {
   const navigate = useNavigate();
-  // Extract routes that should appear in sidebar
+  
+  // Get user data from cookies
+  const studentDetail = getCookie('student_detail');
+  const teacherDetail = getCookie('teacher_detail');
+  
+  let userData = null;
+  let userInitials = 'U';
+  let userName = 'User';
+  let userEmail = 'user@example.com';
+  let userRole = null;
+  
+  if (studentDetail) {
+    try {
+      userData = JSON.parse(studentDetail);
+      if (userData.user) {
+        const { firstName, lastName, email, role } = userData.user;
+        userInitials = `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() || 'S';
+        userName = `${firstName || ''} ${lastName || ''}`.trim() || 'Student';
+        userEmail = email || 'student@example.com';
+        userRole = role;
+      }
+    } catch (error) {
+      console.error('Error parsing student detail:', error);
+    }
+  } else if (teacherDetail) {
+    try {
+      userData = JSON.parse(teacherDetail);
+      if (userData.user) {
+        const { firstName, lastName, email, role } = userData.user;
+        userInitials = `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() || 'T';
+        userName = `${firstName || ''} ${lastName || ''}`.trim() || 'Teacher';
+        userEmail = email || 'teacher@example.com';
+        userRole = role;
+      }
+    } catch (error) {
+      console.error('Error parsing teacher detail:', error);
+    }
+  }
+
+  // Extract routes that should appear in sidebar based on user role
   const SIDE_BAR_ROUTE = PRIVATE_ROUTE_CONFIG[0].children[0].children.filter(
     f => f.isMainLayout
-  );
+  ).filter(route => {
+    if (userRole === 'STUDENT') {
+      return route.path.startsWith('/student/') || route.path === '/dashboard';
+    } else if (userRole === 'TEACHER') {
+      return route.path.startsWith('/teacher/') || route.path === '/dashboard';
+    }
+    return true; // Show all routes if role is not determined
+  });
 
-  // Group routes by section
-  const menuItems = [
-    {
-      section: 'Main Menu',
-      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Main Menu'),
-    },
-    {
-      section: 'Communication',
-      items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication'),
-    },
-    {
-      section: 'Settings & Support',
-      items: SIDE_BAR_ROUTE.filter(
-        route => route.section === 'Settings & Support'
-      ),
-    },
-  ];
+  // Group routes by section based on user role
+  const getMenuItems = () => {
+    if (userRole === 'STUDENT') {
+      return [
+        {
+          section: 'Learning Hub',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Learning Hub'),
+        },
+        {
+          section: 'My Progress',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'My Progress'),
+        },
+        {
+          section: 'Collaboration & Support',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Collaboration & Support'),
+        },
+        {
+          section: 'System Preferences',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'System Preferences'),
+        },
+      ];
+    } else if (userRole === 'TEACHER') {
+      return [
+        {
+          section: 'Main Menu',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Main Menu'),
+        },
+        {
+          section: 'Communication',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication'),
+        },
+        {
+          section: 'Settings & Support',
+          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Settings & Support'),
+        },
+      ];
+    }
+    
+    // Fallback for unknown role
+    return [
+      {
+        section: 'Main Menu',
+        items: SIDE_BAR_ROUTE.filter(route => route.section === 'Main Menu'),
+      },
+      {
+        section: 'Communication',
+        items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication'),
+      },
+      {
+        section: 'Settings & Support',
+        items: SIDE_BAR_ROUTE.filter(route => route.section === 'Settings & Support'),
+      },
+    ];
+  };
+
+  const menuItems = getMenuItems();
 
   const linkClassName = ({ isActive }) =>
     `block p-3 rounded transition-colors flex justify-start items-center gap-3 text-base ${
@@ -39,10 +125,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
     }`;
 
   const handleLogout = () => {
-    setCookie('token', '', -1);
-    setCookie('adminDetail', '', -1);
-    window.location.href = '/login';
-    navigate('/login', { replace: true });
+    logout();
   };
 
   return (
@@ -122,12 +205,12 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       >
         <div className='flex items-center gap-3 p-3'>
           <div className='w-10 h-10 bg-white/20 rounded-full flex items-center justify-center'>
-            <span className='text-white text-sm font-medium'>JD</span>
+            <span className='text-white text-sm font-medium'>{userInitials}</span>
           </div>
           <div className='flex-1'>
-            <p className='text-blended-white_1 text-sm font-normal'>Jhon Doe</p>
+            <p className='text-blended-white_1 text-sm font-normal'>{userName}</p>
             <p className='text-blended-gray_1 text-sm font-normal'>
-              jhon.doe@gmail.com
+              {userEmail}
             </p>
           </div>
         </div>

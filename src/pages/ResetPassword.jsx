@@ -50,7 +50,7 @@ export default function ResetPassword() {
 
   const handleLoginClick = () => {
     const targetRoute =
-      roleString === 'teacher' ? '/teacher-login' : '/student-login';
+      roleString === 'teacher' ? '/teacher/login' : '/student/login';
     navigate(targetRoute, { replace: true });
   };
 
