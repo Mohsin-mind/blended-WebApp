@@ -59,8 +59,7 @@ function LoginFormSection({
       {/* Forgot Password Link */}
       <div className='text-right'>
         <NavLink
-          to='/forgot-password'
-          state={{ role }}
+          to={role === ROLE[1].value ? '/teacher/forgot-password' : '/student/forgot-password'}
           className='text-blended-gray_5 text-base font-normal hover:text-blended-blue_3 transition-colors'
         >
           Forgot Password?

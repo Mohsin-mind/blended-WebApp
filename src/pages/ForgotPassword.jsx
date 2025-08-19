@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import ForgotPasswordLayout from '@/components/pages/LRF/ForgotPassword/ForgotPasswordLayout';
 import ForgotPasswordForm from '@/components/pages/LRF/ForgotPassword/ForgotPasswordForm';
+import AuthSuccessSection from '@/components/pages/LRF/ResetPassword/AuthSuccessSection';
 import { forgotPasswordSchema } from '@/schemas/forgotPasswordSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
@@ -10,13 +11,17 @@ import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import { showToast } from '@/lib/toast';
+import { useState } from 'react';
 
 export default function ForgotPassword() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  // Get role from location state, default to student
-  const role = location.state?.role || ROLE[0].value;
+  // Get role from URL path or location state, default to student
+  const pathRole = location.pathname.startsWith('/teacher/') ? 'teacher' : 'student';
+  const stateRole = location.state?.role;
+  const role = stateRole || (pathRole === 'teacher' ? ROLE[1].value : ROLE[0].value);
 
   // Select image based on role
   const imageSrc =
@@ -27,7 +32,7 @@ export default function ForgotPassword() {
       : 'Student Forgot Password';
 
   const { trigger } = useSWRMutation(
-    '/forgot-password',
+    '/users/forgot-password',
     async (key, { arg }) => {
       return await forgotPasswordApi(JSON.stringify(arg));
     }
@@ -37,19 +42,35 @@ export default function ForgotPassword() {
     try {
       const { meta } = await trigger(data);
       if (meta?.code) {
-        navigate('/otp-verification', {
-          replace: true,
-          state: {
-            role,
-            email: data.email,
-          },
-        });
+        showToast('success', 'Password reset link has been sent to your email!');
+        setIsSuccess(true);
       }
     } catch (error) {
       if (error) {
-        showToast('error', 'Failed to send OTP. Please try again.');
+        showToast('error', 'Failed to send reset link. Please try again.');
       }
     }
+  }
+
+  const handleBackToLogin = () => {
+    const loginRoute = role === ROLE[1].value ? '/teacher/login' : '/student/login';
+    navigate(loginRoute, { replace: true });
+  };
+
+  if (isSuccess) {
+    return (
+      <ForgotPasswordLayout
+        formComponent={AuthSuccessSection}
+        formProps={{ 
+          title: 'Check Your Email',
+          message: "We've sent a password reset link to your email address. Please check your inbox and click the link to reset your password.",
+          buttonText: 'Back to Login',
+          onButtonClick: handleBackToLogin
+        }}
+        imageSrc={imageSrc}
+        altText={altText}
+      />
+    );
   }
 
   return (

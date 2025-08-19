@@ -26,20 +26,43 @@ const PUBLIC_ROUTE_CONFIG = [
         title: 'Teacher Login',
         element: <TeacherLogin />,
       },
+      // Role-based forgot password routes
+      {
+        path: '/student/forgot-password',
+        title: 'Student Forgot Password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: '/teacher/forgot-password',
+        title: 'Teacher Forgot Password',
+        element: <ForgotPassword />,
+      },
+      // Role-based reset password routes
+      {
+        path: '/student/reset-password',
+        title: 'Student Reset Password',
+        element: <ResetPassword />,
+      },
+      {
+        path: '/teacher/reset-password',
+        title: 'Teacher Reset Password',
+        element: <ResetPassword />,
+      },
+      // Legacy routes for backward compatibility
       {
         path: '/forgot-password',
         title: 'Forgot Password',
         element: <ForgotPassword />,
       },
       {
-        path: '/otp-verification',
-        title: 'OTP Verification',
-        element: <OtpVerification />,
-      },
-      {
         path: '/reset-password',
         title: 'Reset Password',
         element: <ResetPassword />,
+      },
+      {
+        path: '/otp-verification',
+        title: 'OTP Verification',
+        element: <OtpVerification />,
       },
       {
         path: '/verify-email',

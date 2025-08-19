@@ -27,7 +27,7 @@ export async function signup(userData) {
 
 // Forgot Password
 export async function forgotPassword(email) {
-  return await handlePost(api, 'POST', '/forgot-password', email);
+  return await handlePost(api, 'POST', '/users/forgot-password', email);
 }
 
 // OTP Verification
@@ -37,7 +37,7 @@ export async function otpVerification(credentials) {
 
 // Reset Password
 export async function resetPassword(credentials) {
-  return await handlePost(api, 'POST', '/reset-password', credentials);
+  return await handlePost(api, 'POST', '/users/reset-password', credentials);
 }
 
 // Change Password

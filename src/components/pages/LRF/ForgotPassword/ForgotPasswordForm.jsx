@@ -31,7 +31,7 @@ function ForgotPasswordForm() {
 
             {/* Send Code Button */}
             <div className='mb-6'>
-              <Button type='submit' title='Send Code' />
+              <Button type='submit' title='Send Email' />
             </div>
           </div>
 
