@@ -201,15 +201,6 @@ const PRIVATE_ROUTE_CONFIG = [
           ...STUDENT_ROUTES,
           // Teacher routes
           ...TEACHER_ROUTES,
-          // Legacy route for backward compatibility - redirects to appropriate dashboard
-          {
-            path: '/dashboard',
-            title: 'Dashboard',
-            icon: dashboardIcon,
-            section: 'Main Menu',
-            isMainLayout: true,
-            element: <DashboardRedirect />,
-          },
         ],
       },
     ],
