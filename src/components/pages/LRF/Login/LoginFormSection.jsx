@@ -14,7 +14,7 @@ function LoginFormSection({
     { label: 'SIGNUP', value: 'signup' },
   ],
   signupText = 'Sign Up',
-  role = ROLE[0].value, // Default to student (value: '1')
+  role = ROLE[0].value,
   onFormChange,
   activeForm,
 }) {
@@ -59,7 +59,11 @@ function LoginFormSection({
       {/* Forgot Password Link */}
       <div className='text-right'>
         <NavLink
-          to={role === ROLE[1].value ? '/teacher/forgot-password' : '/student/forgot-password'}
+          to={
+            role === ROLE[1].value
+              ? '/teacher/forgot-password'
+              : '/student/forgot-password'
+          }
           className='text-blended-gray_5 text-base font-normal hover:text-blended-blue_3 transition-colors'
         >
           Forgot Password?
@@ -78,7 +82,11 @@ function LoginFormSection({
         </span>
         <button
           type='button'
-          onClick={() => handleTabChange('signup')}
+          onClick={() => {
+            if (role === ROLE[0].value) {
+              handleTabChange('signup');
+            }
+          }}
           className='text-blended-blue_7 text-base font-normal hover:text-blended-blue_3 transition-colors underline'
         >
           {signupText}

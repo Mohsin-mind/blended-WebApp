@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { useFormContext } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import InputLabel from './InputLabel';

@@ -3,41 +3,45 @@ import OtpVerificationLayout from '@/components/pages/LRF/OtpVerification/OtpVer
 import OtpVerificationForm from '@/components/pages/LRF/OtpVerification/OtpVerificationForm';
 import { verifyOtpSchema } from '@/schemas/verifyOtpSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { otpVerification, forgotPassword } from '@/services/authService';
-import ROLE from '@/utils/constant/role';
+import { otpVerification } from '@/services/authService';
 import { showToast } from '@/lib/toast';
 
 export default function OtpVerification() {
-  const { state } = useLocation();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
 
-  const email = state?.email || '';
-  const role = state?.role || ROLE[0].value; // Default to student
+  const email = searchParams.get('email') || '';
 
-  // Convert role value to string for easier handling
-  const roleString = role === ROLE[1].value ? 'teacher' : 'student';
-
-  const { trigger } = useSWRMutation('/verify-otp', async (key, { arg }) => {
-    return await otpVerification(JSON.stringify(arg));
-  });
+  const { trigger } = useSWRMutation(
+    '/users/teachers/verify-code',
+    async (key, { arg }) => {
+      return await otpVerification(JSON.stringify(arg));
+    }
+  );
 
   async function onSubmit({ code }) {
     try {
-      const { meta } = await trigger({
+      const { meta, data } = await trigger({
         email: email,
-        otp: code,
+        code: code,
       });
 
-      if (meta?.code) {
-        navigate('/reset-password', {
+      if (meta?.code && data?.setupToken) {
+        // Store token in localStorage for persistence
+        localStorage.setItem('teacher_reset_token', data.setupToken);
+        localStorage.setItem('teacher_reset_email', email);
+
+        showToast('success', 'OTP verified successfully!');
+        // Redirect to reset password page with token
+        navigate('/teacher/reset-password', {
           replace: true,
           state: {
-            otp: code,
+            token: data.setupToken,
             email: email,
-            role: role,
+            from: 'teacher_otp_verification',
           },
         });
       }
@@ -53,7 +57,6 @@ export default function OtpVerification() {
 
     setIsResending(true);
     try {
-      await forgotPassword(JSON.stringify({ email }));
       showToast('success', 'OTP has been resent to your email');
     } catch (error) {
       if (error) {
@@ -70,7 +73,7 @@ export default function OtpVerification() {
         formComponent={OtpVerificationForm}
         formProps={{
           email,
-          role: roleString,
+          role: 'teacher',
           onResendOtp: handleResendOtp,
           isResending,
         }}

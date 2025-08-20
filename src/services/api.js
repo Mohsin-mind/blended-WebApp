@@ -1,6 +1,5 @@
-/* eslint-disable complexity */
 import axios from 'axios';
-import { getCookie, setCookie } from '@/utils/helper';
+import { setCookie } from '@/utils/helper';
 import CONST from '@/utils/constant';
 import { showToast } from '@/lib/toast';
 import { isAuthenticated, getToken, getTokenFromUrl } from './authService';

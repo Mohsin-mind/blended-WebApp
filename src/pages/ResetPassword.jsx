@@ -5,11 +5,10 @@ import { resetPasswordSchema } from '@/schemas/resetPasswordSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { resetPassword } from '@/services/authService';
+import { resetPassword, teacherResetPassword } from '@/services/authService';
 import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
-import { showToast } from '@/lib/toast';
 import { useState } from 'react';
 
 export default function ResetPassword() {
@@ -18,18 +17,27 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Get token from URL params or state
-  const token = searchParams.get('token') || state?.token || '';
-  const email = state?.email || '';
-  const otp = state?.otp || '';
-  
+  // Get token from URL params, state, or localStorage
+  const token =
+    searchParams.get('token') ||
+    state?.token ||
+    localStorage.getItem('teacher_reset_token') ||
+    '';
+
   // Get role from URL path or state, default to student
-  const pathRole = location.pathname.startsWith('/teacher/') ? 'teacher' : 'student';
+  const pathRole = location.pathname.startsWith('/teacher/')
+    ? 'teacher'
+    : 'student';
+
   const stateRole = state?.role;
-  const role = stateRole || (pathRole === 'teacher' ? ROLE[1].value : ROLE[0].value);
+  const role =
+    stateRole || (pathRole === 'teacher' ? ROLE[1].value : ROLE[0].value);
 
   // Convert role value to string for easier handling
   const roleString = role === ROLE[1].value ? 'teacher' : 'student';
+
+  const isTeacherEmailOTPVerificationFlow =
+    state?.from === 'teacher_otp_verification';
 
   // Select image based on role
   const imageSrc =
@@ -39,28 +47,39 @@ export default function ResetPassword() {
       ? 'Teacher Reset Password'
       : 'Student Reset Password';
 
-  const { trigger } = useSWRMutation(
-    '/users/reset-password',
-    async (key, { arg }) => {
-      return await resetPassword(JSON.stringify(arg));
-    }
-  );
+  // Choose the appropriate API based on flow type
+  const apiEndpoint = isTeacherEmailOTPVerificationFlow
+    ? '/users/teachers/setup-password'
+    : '/users/reset-password';
+
+  const { trigger } = useSWRMutation(apiEndpoint, async (key, { arg }) => {
+    const apiFunction = isTeacherEmailOTPVerificationFlow
+      ? teacherResetPassword
+      : resetPassword;
+    return await apiFunction(JSON.stringify(arg));
+  });
 
   async function onSubmit(data) {
-    try {
-      const { meta } = await trigger({
-        token: token, // Token from URL
-        password: data.password, // New password
-      });
+    // Prepare payload based on flow type
+    const payload = isTeacherEmailOTPVerificationFlow
+      ? {
+          setupToken: token,
+          password: data.password,
+        }
+      : {
+          token: token,
+          password: data.password,
+        };
 
-      if (meta?.code) {
-        showToast('success', 'Password reset successful!');
-        setIsSuccess(true);
+    const { meta } = await trigger(payload);
+
+    if (meta?.code) {
+      // Clear localStorage after successful password reset (only for teacher email verification flow)
+      if (isTeacherEmailOTPVerificationFlow) {
+        localStorage.removeItem('teacher_reset_token');
+        localStorage.removeItem('teacher_reset_email');
       }
-    } catch (error) {
-      if (error) {
-        showToast('error', 'Failed to reset password. Please try again.');
-      }
+      setIsSuccess(true);
     }
   }
 
@@ -76,7 +95,8 @@ export default function ResetPassword() {
         formComponent={AuthSuccessSection}
         formProps={{
           title: 'Password Reset Successful',
-          message: "You've successfully created a New Password. Click below to Login.",
+          message:
+            "You've successfully created a New Password. Click below to Login.",
           buttonText: 'Login',
           onButtonClick: handleLoginClick,
         }}

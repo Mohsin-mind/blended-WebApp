@@ -10,7 +10,6 @@ import { forgotPassword as forgotPasswordApi } from '@/services/authService';
 import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
-import { showToast } from '@/lib/toast';
 import { useState } from 'react';
 
 export default function ForgotPassword() {
@@ -19,9 +18,12 @@ export default function ForgotPassword() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   // Get role from URL path or location state, default to student
-  const pathRole = location.pathname.startsWith('/teacher/') ? 'teacher' : 'student';
+  const pathRole = location.pathname.startsWith('/teacher/')
+    ? 'teacher'
+    : 'student';
   const stateRole = location.state?.role;
-  const role = stateRole || (pathRole === 'teacher' ? ROLE[1].value : ROLE[0].value);
+  const role =
+    stateRole || (pathRole === 'teacher' ? ROLE[1].value : ROLE[0].value);
 
   // Select image based on role
   const imageSrc =
@@ -39,21 +41,15 @@ export default function ForgotPassword() {
   );
 
   async function onSubmit(data) {
-    try {
-      const { meta } = await trigger(data);
-      if (meta?.code) {
-        showToast('success', 'Password reset link has been sent to your email!');
-        setIsSuccess(true);
-      }
-    } catch (error) {
-      if (error) {
-        showToast('error', 'Failed to send reset link. Please try again.');
-      }
+    const { meta } = await trigger(data);
+    if (meta?.code) {
+      setIsSuccess(true);
     }
   }
 
   const handleBackToLogin = () => {
-    const loginRoute = role === ROLE[1].value ? '/teacher/login' : '/student/login';
+    const loginRoute =
+      role === ROLE[1].value ? '/teacher/login' : '/student/login';
     navigate(loginRoute, { replace: true });
   };
 
@@ -61,11 +57,12 @@ export default function ForgotPassword() {
     return (
       <ForgotPasswordLayout
         formComponent={AuthSuccessSection}
-        formProps={{ 
+        formProps={{
           title: 'Check Your Email',
-          message: "We've sent a password reset link to your email address. Please check your inbox and click the link to reset your password.",
+          message:
+            "We've sent a password reset link to your email address. Please check your inbox and click the link to reset your password.",
           buttonText: 'Back to Login',
-          onButtonClick: handleBackToLogin
+          onButtonClick: handleBackToLogin,
         }}
         imageSrc={imageSrc}
         altText={altText}

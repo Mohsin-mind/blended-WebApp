@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import LRFHeaderSection from '../Login/LRFHeaderSection';
 
-function AuthSuccessSection({ 
-  title, 
-  message, 
-  buttonText = 'Back to Login', 
+function AuthSuccessSection({
+  title,
+  message,
+  buttonText = 'Back to Login',
   onButtonClick,
-  additionalInfo 
+  additionalInfo,
 }) {
   return (
     <>
@@ -35,9 +35,7 @@ function AuthSuccessSection({
 
             {/* Additional Info */}
             {additionalInfo && (
-              <p className='text-blended-gray_5 text-xs'>
-                {additionalInfo}
-              </p>
+              <p className='text-blended-gray_5 text-xs'>{additionalInfo}</p>
             )}
           </div>
         </div>

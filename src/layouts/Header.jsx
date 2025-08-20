@@ -6,7 +6,6 @@ export default function Header() {
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearch = value => {
-    // eslint-disable-next-line no-console
     console.log('Searching for:', value);
     // Add search functionality here
   };

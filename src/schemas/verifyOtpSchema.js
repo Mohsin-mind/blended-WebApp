@@ -10,6 +10,6 @@ export const verifyOtpSchema = z.object({
     .nonempty({
       message: replacePlaceholder(REQUIRED, '<field_name>', 'OTP'),
     })
-    .length(5, { message: OTP_DIGITS })
+    .length(6, { message: OTP_DIGITS })
     .regex(/^\d+$/, { message: OTP_NUMERIC }),
 });

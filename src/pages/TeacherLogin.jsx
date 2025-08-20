@@ -13,21 +13,25 @@ import { setCookie } from '@/utils/helper';
 export default function TeacherLogin() {
   const navigate = useNavigate();
   const { trigger } = useSWRMutation('/login', async (key, { arg }) => {
-    return await loginApi(JSON.stringify(arg));
+    return await loginApi(JSON.stringify(arg), false);
   });
 
   async function onSubmit(data) {
-    const { meta , data: responseData} = await trigger(data);
+    const { meta, data: responseData } = await trigger(data);
     if (meta?.code && responseData?.token) {
       // Validate that the user is actually a teacher
       if (responseData.user?.role !== 'TEACHER') {
-        showToast('error', 'This login page is for teachers only. Please use the student login page.');
+        showToast(
+          'error',
+          'This login page is for teachers only. Please use the student login page.'
+        );
         return;
       }
-      
+
       setCookie('teacher_token', responseData?.token);
       setCookie('teacher_detail', JSON.stringify(responseData));
       navigate('/teacher/dashboard', { replace: true });
+      showToast(meta?.code ? 'success' : 'error', meta?.message);
     } else {
       showToast('error', 'Invalid credentials');
     }

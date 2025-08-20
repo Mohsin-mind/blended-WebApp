@@ -7,7 +7,6 @@ import { useSelect } from '@/hooks/useSelect';
 import InputLabel from '../InputLabel';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line complexity
 export default function Select(props) {
   const {
     name,

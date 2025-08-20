@@ -1,32 +1,14 @@
 import MainLayout from '@/layouts/MainLayout';
 import Dashboard from '@/pages/Dashboard';
-import ManageUsers from '@/pages/ManageUsers';
 import PrivateRouteValidate from './PrivateRouteValidate';
 import ChangePassword from '@/pages/ChangePassword';
-import { Navigate } from 'react-router-dom';
-import { getUserRole, getDashboardUrl } from '@/services/authService';
 import dashboardIcon from '@/assets/images/svg/dashboard.svg';
-import cmsIcon from '@/assets/images/svg/database-management.svg';
 import userIcon from '@/assets/images/svg/users-gear.svg';
 import courseIcon from '@/assets/images/svg/e-learning.svg';
-import roleIcon from '@/assets/images/svg/users-gear.svg';
-import pricingIcon from '@/assets/images/svg/tags.svg';
-import transactionIcon from '@/assets/images/svg/receipt.svg';
 import chatIcon from '@/assets/images/svg/Letter.svg';
 import scheduleIcon from '@/assets/images/svg/calendar-day.svg';
 import helpIcon from '@/assets/images/svg/info.svg';
 import settingsIcon from '@/assets/images/svg/settings.svg';
-
-// Component to redirect legacy dashboard to role-based dashboard
-const DashboardRedirect = () => {
-  const userRole = getUserRole();
-  if (userRole === 'STUDENT') {
-    return <Navigate to={getDashboardUrl('STUDENT')} replace />;
-  } else if (userRole === 'TEACHER') {
-    return <Navigate to={getDashboardUrl('TEACHER')} replace />;
-  }
-  return <Navigate to="/student/login" replace />;
-};
 
 // Student routes - based on the student sidebar image
 const STUDENT_ROUTES = [

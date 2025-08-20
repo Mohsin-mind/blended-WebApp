@@ -16,16 +16,15 @@ const swrConfig = {
   dedupingInterval: 2000,
   refreshInterval: 0, // Disable automatic refresh by default
   onError: (error, key) => {
-    // eslint-disable-next-line no-console
     console.error('SWR Error:', { key, error });
     if (error.response?.status === CONST.HTTP_STATUS.UNAUTHORIZED) {
       // Unauthorized - token might be expired
-      // eslint-disable-next-line no-console
+
       console.warn(CONST.HTTP_ERROR_MSG.UNOTHORIZED_ACCESS);
     }
     if (error.response?.status >= CONST.HTTP_STATUS.INTERNAL_SERVER_ERROR) {
       // Server error - could show a toast notification
-      // eslint-disable-next-line no-console
+
       console.error(CONST.HTTP_ERROR_MSG.SERVER_ERROR);
     }
   },

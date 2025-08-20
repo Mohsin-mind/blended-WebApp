@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { useEffect, useState } from 'react';
 import cn from '@/lib/clsx';
 import Pagination from './Pagination';

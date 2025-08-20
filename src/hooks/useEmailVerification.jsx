@@ -28,11 +28,6 @@ export function useEmailVerification() {
           setVerificationStatus('success');
           showToast('success', meta.message || 'Email verified successfully!');
 
-          // Redirect to login page after 3 seconds
-          setTimeout(() => {
-            navigate('/student/login', { replace: true });
-          }, 3000);
-
           return { success: true, message: meta.message };
         }
         setVerificationStatus('error');

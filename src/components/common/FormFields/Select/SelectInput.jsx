@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import cn from '@/lib/clsx';
 import { ComboboxInput } from '@headlessui/react';
 import { forwardRef } from 'react';

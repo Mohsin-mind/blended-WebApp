@@ -19,14 +19,12 @@ export const ZodFormProvider = ({ schema, onSubmit, children, ...rest }) => {
       try {
         await onSubmit(values);
       } catch (err) {
-        // eslint-disable-next-line no-console
         console.error(err.message);
       } finally {
         setLoading(false);
       }
     },
     errors => {
-      // eslint-disable-next-line no-console
       console.error('Zod validation errors:', errors);
     }
   );

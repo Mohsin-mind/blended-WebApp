@@ -4,28 +4,27 @@ import logo from '@/assets/images/svg/BlendedED_Logo.svg';
 import toggleIcon from '@/assets/images/svg/toggle_sidebar.svg';
 import logoutIcon from '@/assets/images/svg/login.svg';
 import { getCookie } from '@/utils/helper';
-import { useNavigate } from 'react-router-dom';
 import { logout } from '@/services/authService';
 
 export default function Sidebar({ isCollapsed, setIsCollapsed }) {
-  const navigate = useNavigate();
-  
   // Get user data from cookies
   const studentDetail = getCookie('student_detail');
   const teacherDetail = getCookie('teacher_detail');
-  
+
   let userData = null;
   let userInitials = 'U';
   let userName = 'User';
   let userEmail = 'user@example.com';
   let userRole = null;
-  
+
   if (studentDetail) {
     try {
       userData = JSON.parse(studentDetail);
       if (userData.user) {
         const { firstName, lastName, email, role } = userData.user;
-        userInitials = `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() || 'S';
+        userInitials =
+          `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() ||
+          'S';
         userName = `${firstName || ''} ${lastName || ''}`.trim() || 'Student';
         userEmail = email || 'student@example.com';
         userRole = role;
@@ -38,7 +37,9 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       userData = JSON.parse(teacherDetail);
       if (userData.user) {
         const { firstName, lastName, email, role } = userData.user;
-        userInitials = `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() || 'T';
+        userInitials =
+          `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() ||
+          'T';
         userName = `${firstName || ''} ${lastName || ''}`.trim() || 'Teacher';
         userEmail = email || 'teacher@example.com';
         userRole = role;
@@ -49,16 +50,20 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
   }
 
   // Extract routes that should appear in sidebar based on user role
-  const SIDE_BAR_ROUTE = PRIVATE_ROUTE_CONFIG[0].children[0].children.filter(
-    f => f.isMainLayout
-  ).filter(route => {
-    if (userRole === 'STUDENT') {
-      return route.path.startsWith('/student/') || route.path === '/dashboard';
-    } else if (userRole === 'TEACHER') {
-      return route.path.startsWith('/teacher/') || route.path === '/dashboard';
-    }
-    return true; // Show all routes if role is not determined
-  });
+  const SIDE_BAR_ROUTE = PRIVATE_ROUTE_CONFIG[0].children[0].children
+    .filter(f => f.isMainLayout)
+    .filter(route => {
+      if (userRole === 'STUDENT') {
+        return (
+          route.path.startsWith('/student/') || route.path === '/dashboard'
+        );
+      } else if (userRole === 'TEACHER') {
+        return (
+          route.path.startsWith('/teacher/') || route.path === '/dashboard'
+        );
+      }
+      return true; // Show all routes if role is not determined
+    });
 
   // Group routes by section based on user role
   const getMenuItems = () => {
@@ -66,19 +71,27 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       return [
         {
           section: 'Learning Hub',
-          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Learning Hub'),
+          items: SIDE_BAR_ROUTE.filter(
+            route => route.section === 'Learning Hub'
+          ),
         },
         {
           section: 'My Progress',
-          items: SIDE_BAR_ROUTE.filter(route => route.section === 'My Progress'),
+          items: SIDE_BAR_ROUTE.filter(
+            route => route.section === 'My Progress'
+          ),
         },
         {
           section: 'Collaboration & Support',
-          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Collaboration & Support'),
+          items: SIDE_BAR_ROUTE.filter(
+            route => route.section === 'Collaboration & Support'
+          ),
         },
         {
           section: 'System Preferences',
-          items: SIDE_BAR_ROUTE.filter(route => route.section === 'System Preferences'),
+          items: SIDE_BAR_ROUTE.filter(
+            route => route.section === 'System Preferences'
+          ),
         },
       ];
     } else if (userRole === 'TEACHER') {
@@ -89,15 +102,19 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
         },
         {
           section: 'Communication',
-          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication'),
+          items: SIDE_BAR_ROUTE.filter(
+            route => route.section === 'Communication'
+          ),
         },
         {
           section: 'Settings & Support',
-          items: SIDE_BAR_ROUTE.filter(route => route.section === 'Settings & Support'),
+          items: SIDE_BAR_ROUTE.filter(
+            route => route.section === 'Settings & Support'
+          ),
         },
       ];
     }
-    
+
     // Fallback for unknown role
     return [
       {
@@ -106,11 +123,15 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       },
       {
         section: 'Communication',
-        items: SIDE_BAR_ROUTE.filter(route => route.section === 'Communication'),
+        items: SIDE_BAR_ROUTE.filter(
+          route => route.section === 'Communication'
+        ),
       },
       {
         section: 'Settings & Support',
-        items: SIDE_BAR_ROUTE.filter(route => route.section === 'Settings & Support'),
+        items: SIDE_BAR_ROUTE.filter(
+          route => route.section === 'Settings & Support'
+        ),
       },
     ];
   };
@@ -205,10 +226,14 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       >
         <div className='flex items-center gap-3 p-3'>
           <div className='w-10 h-10 bg-white/20 rounded-full flex items-center justify-center'>
-            <span className='text-white text-sm font-medium'>{userInitials}</span>
+            <span className='text-white text-sm font-medium'>
+              {userInitials}
+            </span>
           </div>
           <div className='flex-1'>
-            <p className='text-blended-white_1 text-sm font-normal'>{userName}</p>
+            <p className='text-blended-white_1 text-sm font-normal'>
+              {userName}
+            </p>
             <p className='text-blended-gray_1 text-sm font-normal'>
               {userEmail}
             </p>

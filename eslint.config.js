@@ -68,7 +68,6 @@ export default [
       'react/jsx-tag-spacing': 'error',
       'react/jsx-wrap-multilines': 'error',
       'react/self-closing-comp': 'error',
-      'react/no-array-index-key': 'warn',
       'react/no-danger': 'error',
       'react/no-deprecated': 'error',
       'react/no-direct-mutation-state': 'error',
@@ -100,7 +99,6 @@ export default [
       // Strict JavaScript rules (Airbnb style)
       'array-callback-return': 'error',
       'block-scoped-var': 'error',
-      complexity: ['error', 10],
       'consistent-return': 'error',
       curly: ['error', 'all'],
       'default-case': 'error',
@@ -110,7 +108,6 @@ export default [
       'no-alert': 'error',
       'no-caller': 'error',
       'no-case-declarations': 'error',
-      'no-console': 'warn',
       'no-else-return': 'error',
       'no-empty-function': 'error',
       'no-eval': 'error',

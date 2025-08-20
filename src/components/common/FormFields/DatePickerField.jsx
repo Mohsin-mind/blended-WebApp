@@ -9,7 +9,6 @@ import { useFormContext } from 'react-hook-form';
 import cn from '@/lib/clsx';
 import { useEffect, useState } from 'react';
 
-// eslint-disable-next-line complexity
 function DatePickerField({
   name,
   label,
