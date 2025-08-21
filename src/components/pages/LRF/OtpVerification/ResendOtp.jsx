@@ -1,5 +1,5 @@
 import useSWRMutation from 'swr/mutation';
-import { forgotPassword } from '@/services/authService';
+import { forgotPassword } from '@/services/apiService';
 import { useEffect, useState } from 'react';
 import CONST from '@/utils/constant';
 

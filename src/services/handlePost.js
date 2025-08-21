@@ -8,7 +8,8 @@ export async function handlePost(
   url,
   payload,
   config = {},
-  showSuccessToast = true
+  showSuccessToast = true,
+  showErrorToast = true
 ) {
   const response = await client[method.toLowerCase()](url, payload, config);
   const { data, meta } = response.data;
@@ -17,7 +18,7 @@ export async function handlePost(
 
   if (!isToastPrevented && showSuccessToast) {
     showToast(meta?.code ? 'success' : 'error', meta?.message);
-  } else if (!meta?.code) {
+  } else if (!meta?.code && showErrorToast) {
     showToast('error', meta.message);
   }
 

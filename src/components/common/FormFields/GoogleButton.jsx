@@ -1,12 +1,37 @@
-// React import removed as it's not used
+import { useGoogleLogin } from '@react-oauth/google';
 import PropTypes from 'prop-types';
+import { authenticateWithGoogle } from '@/services/apiService';
 
-const GoogleButton = ({ mode = 'login' }) => {
+const GoogleButton = ({ mode = 'login', onSuccess, onError }) => {
+  const login = useGoogleLogin({
+    onSuccess: async response => {
+      try {
+        const result = await authenticateWithGoogle(response.access_token);
+        if (onSuccess) {
+          onSuccess(result);
+        }
+      } catch (error) {
+        console.error('Google authentication error:', error);
+        if (onError) {
+          onError(error);
+        }
+      }
+    },
+    onError: error => {
+      console.error('Google login error:', error);
+      if (onError) {
+        onError(error);
+      }
+    },
+    scope: 'openid email profile',
+  });
+
   const buttonText =
     mode === 'signup' ? 'Sign Up With Google' : 'Login Via Google';
 
   return (
     <button
+      onClick={() => login()}
       className='w-full bg-white/60 shadow-lg px-4 py-3 flex items-center justify-center space-x-3 hover:bg-gray-50 transition-colors mb-4'
       type='button'
     >
@@ -37,6 +62,8 @@ const GoogleButton = ({ mode = 'login' }) => {
 
 GoogleButton.propTypes = {
   mode: PropTypes.oneOf(['login', 'signup']),
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 export default GoogleButton;

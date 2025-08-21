@@ -17,6 +17,8 @@ function LoginFormSection({
   role = ROLE[0].value,
   onFormChange,
   activeForm,
+  onGoogleSuccess,
+  onGoogleError,
 }) {
   const [activeTab, setActiveTab] = useState(activeForm || 'login');
 
@@ -194,7 +196,11 @@ function LoginFormSection({
                 </div>
 
                 {/* Google Button */}
-                <GoogleButton mode={activeTab} />
+                <GoogleButton
+                  mode={activeTab}
+                  onSuccess={onGoogleSuccess}
+                  onError={onGoogleError}
+                />
               </>
             )}
             <div className='flex items-center justify-center space-x-4 text-blended-gray_1 text-sm mt-4'>
@@ -231,6 +237,8 @@ LoginFormSection.propTypes = {
   role: PropTypes.oneOf([ROLE[0].value, ROLE[1].value]),
   onFormChange: PropTypes.func,
   activeForm: PropTypes.string,
+  onGoogleSuccess: PropTypes.func,
+  onGoogleError: PropTypes.func,
 };
 
 export default LoginFormSection;

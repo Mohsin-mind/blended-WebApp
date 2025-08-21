@@ -7,7 +7,7 @@ import { signupSchema } from '@/schemas/signupSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { login as loginApi, signup as signupApi } from '@/services/authService';
+import { login as loginApi, signup as signupApi } from '@/services/apiService';
 import { showToast } from '@/lib/toast';
 import { setCookie } from '@/utils/helper';
 
@@ -15,6 +15,7 @@ export default function StudentLogin() {
   const navigate = useNavigate();
   const [activeForm, setActiveForm] = useState('login');
   const [isSignupSuccess, setIsSignupSuccess] = useState(false);
+  const [signupEmail, setSignupEmail] = useState('');
 
   const { trigger: loginTrigger } = useSWRMutation(
     '/users/login',
@@ -34,7 +35,7 @@ export default function StudentLogin() {
     const trigger = activeForm === 'login' ? loginTrigger : signupTrigger;
     const { meta, data: responseData } = await trigger(data);
 
-    if (meta?.code) {
+    if (meta?.code === 1) {
       if (activeForm === 'login') {
         // Handle login
         if (responseData?.token) {
@@ -65,6 +66,7 @@ export default function StudentLogin() {
           }
         } else {
           // Email not verified, show success message
+          setSignupEmail(data.email);
           setIsSignupSuccess(true);
         }
       }
@@ -76,12 +78,49 @@ export default function StudentLogin() {
     }
   }
 
+  // Handle Google authentication success
+  async function handleGoogleSuccess(result) {
+    const { meta, data: responseData } = result;
+
+    if (meta?.code === 1) {
+      if (responseData?.token) {
+        // Validate that the user is actually a student
+        if (responseData.user?.role !== 'STUDENT') {
+          showToast(
+            'error',
+            'This login page is for students only. Please use the teacher login page.'
+          );
+          return;
+        }
+
+        setCookie('student_token', responseData?.token);
+        setCookie('student_detail', JSON.stringify(responseData));
+        navigate('/student/dashboard', { replace: true });
+        showToast(
+          'success',
+          meta?.message || 'Google authentication successful'
+        );
+      } else {
+        showToast('error', 'Google authentication failed');
+      }
+    } else {
+      showToast('error', meta?.message || 'Google authentication failed');
+    }
+  }
+
+  // Handle Google authentication error
+  function handleGoogleError(error) {
+    console.error('Google authentication error:', error);
+    showToast('error', 'Google authentication failed. Please try again.');
+  }
+
   const handleFormChange = formType => {
     setActiveForm(formType);
   };
 
   const handleBackToLogin = () => {
     setIsSignupSuccess(false);
+    setSignupEmail('');
     setActiveForm('login');
   };
 
@@ -97,6 +136,8 @@ export default function StudentLogin() {
             "We've sent a verification link to your email address. Please check your inbox and click the link to verify your account before logging in.",
           buttonText: 'Back to Login',
           onButtonClick: handleBackToLogin,
+          showResendEmail: true,
+          userEmail: signupEmail,
         }}
       />
     );
@@ -112,6 +153,8 @@ export default function StudentLogin() {
         formComponent={LoginFormSection}
         onFormChange={handleFormChange}
         activeForm={activeForm}
+        onGoogleSuccess={handleGoogleSuccess}
+        onGoogleError={handleGoogleError}
       />
     </ZodFormProvider>
   );

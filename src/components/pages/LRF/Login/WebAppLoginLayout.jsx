@@ -9,6 +9,8 @@ function WebAppLoginLayout({
   formProps = {},
   onFormChange,
   activeForm,
+  onGoogleSuccess,
+  onGoogleError,
 }) {
   // Define text content based on form type (only if activeForm is provided and no explicit title/subtitle)
   const getTextContent = () => {
@@ -56,6 +58,8 @@ function WebAppLoginLayout({
           {...formProps}
           onFormChange={onFormChange}
           activeForm={activeForm}
+          onGoogleSuccess={onGoogleSuccess}
+          onGoogleError={onGoogleError}
         />
       </div>
 
@@ -81,6 +85,8 @@ WebAppLoginLayout.propTypes = {
   formProps: PropTypes.object,
   onFormChange: PropTypes.func,
   activeForm: PropTypes.string,
+  onGoogleSuccess: PropTypes.func,
+  onGoogleError: PropTypes.func,
 };
 
 export default WebAppLoginLayout;

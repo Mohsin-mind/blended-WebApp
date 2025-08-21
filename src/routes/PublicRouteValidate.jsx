@@ -1,16 +1,10 @@
-import {
-  isAuthenticated,
-  getUserRole,
-  getDashboardUrl,
-} from '@/services/authService';
+import { isAuthenticated, getUserRole } from '@/services/apiService';
+import { getDashboardUrl } from '@/utils/helper';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 export default function PublicRouteValidate() {
   const location = useLocation();
   const currentPath = location.pathname;
-
-  console.log(currentPath, 'currentPath');
-
   // Routes that should always be accessible (even when authenticated)
   const alwaysAccessibleRoutes = [
     '/student/forgot-password',

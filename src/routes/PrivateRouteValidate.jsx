@@ -1,9 +1,5 @@
-import {
-  isAuthenticated,
-  getUserRole,
-  getLoginPageUrl,
-  getDashboardUrl,
-} from '@/services/authService';
+import { isAuthenticated, getUserRole } from '@/services/apiService';
+import { getDashboardUrl, getLoginPageUrl } from '@/utils/helper';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 export default function PrivateRouteValidate() {

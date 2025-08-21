@@ -50,3 +50,50 @@ export function generateEmailVerificationUrl(token) {
   const baseUrl = window.location.origin;
   return `${baseUrl}/verify-email?token=${token}`;
 }
+
+/**
+ * Get user role from URL path (for use outside React components)
+ * @param {string} pathname - The URL pathname
+ * @returns {string|null} The user's role based on URL path
+ */
+export function getRoleFromUrl() {
+  const pathname = window.location.pathname;
+  if (pathname?.startsWith('/student/')) {
+    return 'STUDENT';
+  } else if (pathname?.startsWith('/teacher/')) {
+    return 'TEACHER';
+  }
+  return null;
+}
+
+/**
+ * Get login page URL based on role
+ * @param {string} role - The user's role ('STUDENT' or 'TEACHER')
+ * @returns {string} The appropriate login page URL
+ */
+export function getLoginPageUrl(role) {
+  switch (role) {
+    case 'STUDENT':
+      return '/student/login';
+    case 'TEACHER':
+      return '/teacher/login';
+    default:
+      return '/student/login'; // default fallback
+  }
+}
+
+/**
+ * Get dashboard URL based on role
+ * @param {string} role - The user's role ('STUDENT' or 'TEACHER')
+ * @returns {string} The appropriate dashboard URL
+ */
+export function getDashboardUrl(role) {
+  switch (role) {
+    case 'STUDENT':
+      return '/student/dashboard';
+    case 'TEACHER':
+      return '/teacher/dashboard';
+    default:
+      return '/student/dashboard'; // default fallback
+  }
+}

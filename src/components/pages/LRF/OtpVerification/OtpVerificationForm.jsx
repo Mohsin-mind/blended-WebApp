@@ -48,7 +48,7 @@ function OtpVerificationForm({
             </div>
 
             {/* Resend Code Link */}
-            {/* <div className='text-center'>
+            <div className='text-center'>
               <span className='text-blended-gray_5 text-sm lg:text-base font-normal mr-1'>
                 Didn&apos;t get any code?
               </span>
@@ -60,7 +60,7 @@ function OtpVerificationForm({
               >
                 {isResending ? 'Sending...' : 'Click to Resend'}
               </button>
-            </div> */}
+            </div>
 
             {/* Footer Links */}
             <div className='text-center pt-6 lg:pt-8 mb-6 lg:mb-10 flex justify-center items-center'>

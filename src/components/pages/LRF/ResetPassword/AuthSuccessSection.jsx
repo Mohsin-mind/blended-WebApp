@@ -1,16 +1,45 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@/components/common/FormFields/Button';
 import LRFHeaderSection from '../Login/LRFHeaderSection';
+import useSWRMutation from 'swr/mutation';
+import { resendEmailVerification } from '@/services/apiService';
+import { showToast } from '@/lib/toast';
 
 function AuthSuccessSection({
   title,
   message,
   buttonText = 'Back to Login',
   onButtonClick,
+  showResendEmail = false,
+  userEmail = '',
 }) {
+  const [isResending, setIsResending] = useState(false);
+
+  const { trigger: resendTrigger } = useSWRMutation(
+    '/users/resend-verification',
+    async (key, { arg }) => {
+      return await resendEmailVerification(arg);
+    }
+  );
+
   const handleButtonClick = () => {
     if (onButtonClick) {
       onButtonClick();
+    }
+  };
+
+  const handleResendEmail = async () => {
+    if (!userEmail) {
+      showToast('error', 'Email address not found');
+      return;
+    }
+
+    try {
+      setIsResending(true);
+      await resendTrigger(userEmail);
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -42,6 +71,25 @@ function AuthSuccessSection({
                 onClick={handleButtonClick}
               />
             </div>
+
+            {/* Resend Email Section - Only shown when showResendEmail is true */}
+            {showResendEmail && (
+              <>
+                <div className='text-center mt-3'>
+                  <span className='text-blended-gray_5 text-sm lg:text-base font-normal mr-1'>
+                    Didn&apos;t get any email?
+                  </span>
+                  <button
+                    type='button'
+                    onClick={handleResendEmail}
+                    disabled={isResending}
+                    className='text-blended-blue_7 text-sm lg:text-base font-normal hover:text-blended-blue_3 transition-colors underline disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
+                    {isResending ? 'Sending...' : 'Click to Resend'}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -54,6 +102,8 @@ AuthSuccessSection.propTypes = {
   message: PropTypes.string.isRequired,
   buttonText: PropTypes.string,
   onButtonClick: PropTypes.func,
+  showResendEmail: PropTypes.bool,
+  userEmail: PropTypes.string,
 };
 
 export default AuthSuccessSection;

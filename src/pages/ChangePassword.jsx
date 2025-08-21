@@ -1,7 +1,7 @@
 import ChangePasswordForm from '@/components/pages/LRF/ChangePassword/ChangePasswordForm';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { changePasswordSchema } from '@/schemas/changePasswordSchema';
-import { changePassword, logout } from '@/services/authService';
+import { changePassword, logout } from '@/services/apiService';
 import useSWRMutation from 'swr/mutation';
 
 export default function ChangePassword() {
@@ -18,7 +18,7 @@ export default function ChangePassword() {
       new_password: data.new_password,
     });
 
-    if (meta?.code) {
+    if (meta?.code === 1) {
       logout();
     }
   }

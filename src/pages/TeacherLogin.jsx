@@ -4,7 +4,7 @@ import { loginSchema } from '@/schemas/loginSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { login as loginApi } from '@/services/authService';
+import { login as loginApi } from '@/services/apiService';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import ROLE from '@/utils/constant/role';
 import { showToast } from '@/lib/toast';

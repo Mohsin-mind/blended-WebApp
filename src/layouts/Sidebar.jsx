@@ -4,7 +4,7 @@ import logo from '@/assets/images/svg/BlendedED_Logo.svg';
 import toggleIcon from '@/assets/images/svg/toggle_sidebar.svg';
 import logoutIcon from '@/assets/images/svg/login.svg';
 import { getCookie } from '@/utils/helper';
-import { logout } from '@/services/authService';
+import { logout } from '@/services/apiService';
 
 export default function Sidebar({ isCollapsed, setIsCollapsed }) {
   // Get user data from cookies

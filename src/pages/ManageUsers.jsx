@@ -6,7 +6,7 @@ import ToggleSwitch from '@/components/common/FormFields/ToggleSwitch';
 import useSWR, { useSWRConfig } from 'swr';
 import { formatDateTime } from '@/lib/dateFormat';
 import { useSearchParams } from 'react-router-dom';
-import { updateUserStatus } from '@/services/authService';
+import { updateUserStatus } from '@/services/apiService';
 import EyeButton from '@/components/common/FormFields/EyeButton';
 import SORT_ORDERS from '@/utils/constant/tableCont';
 import useSWRMutation from 'swr/mutation';
@@ -94,7 +94,7 @@ function ManageUsers() {
 
   async function onToggle(arg) {
     const { meta } = await trigger(arg);
-    if (meta?.code) {
+    if (meta?.code === 1) {
       mutate(queryKey);
     }
   }

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { verifyEmail } from '@/services/authService';
+import { verifyEmail } from '@/services/apiService';
 import { showToast } from '@/lib/toast';
 
 export function useEmailVerification() {
@@ -24,10 +24,8 @@ export function useEmailVerification() {
       try {
         const { meta } = await verifyEmail(token);
 
-        if (meta?.code) {
+        if (meta?.code === 1) {
           setVerificationStatus('success');
-          showToast('success', meta.message || 'Email verified successfully!');
-
           return { success: true, message: meta.message };
         }
         setVerificationStatus('error');

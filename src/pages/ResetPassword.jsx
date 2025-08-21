@@ -5,7 +5,7 @@ import { resetPasswordSchema } from '@/schemas/resetPasswordSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { resetPassword, teacherResetPassword } from '@/services/authService';
+import { resetPassword, teacherResetPassword } from '@/services/apiService';
 import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
@@ -73,7 +73,7 @@ export default function ResetPassword() {
 
     const { meta } = await trigger(payload);
 
-    if (meta?.code) {
+    if (meta?.code === 1) {
       // Clear localStorage after successful password reset (only for teacher email verification flow)
       if (isTeacherEmailOTPVerificationFlow) {
         localStorage.removeItem('teacher_reset_token');

@@ -6,7 +6,7 @@ import { forgotPasswordSchema } from '@/schemas/forgotPasswordSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { forgotPassword as forgotPasswordApi } from '@/services/authService';
+import { forgotPassword as forgotPasswordApi } from '@/services/apiService';
 import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
@@ -42,7 +42,7 @@ export default function ForgotPassword() {
 
   async function onSubmit(data) {
     const { meta } = await trigger(data);
-    if (meta?.code) {
+    if (meta?.code === 1) {
       setIsSuccess(true);
     }
   }

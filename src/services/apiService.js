@@ -1,10 +1,15 @@
 import api from './api';
-import { setCookie, getCookie } from '@/utils/helper';
+import {
+  setCookie,
+  getCookie,
+  getLoginPageUrl,
+  getRoleFromUrl,
+} from '@/utils/helper';
 import { handlePost } from './handlePost';
 
 // Login
 export async function login(credentials, showSuccessToast = true) {
-  const { data, meta } = await handlePost(
+  return await handlePost(
     api,
     'POST',
     '/users/login',
@@ -12,18 +17,68 @@ export async function login(credentials, showSuccessToast = true) {
     {},
     showSuccessToast
   );
-  return { data, meta };
 }
 
 // Signup
 export async function signup(userData) {
-  const { data, meta } = await handlePost(
+  return await handlePost(api, 'POST', '/users/register', userData);
+}
+
+// Google Authentication
+export async function googleAuth(googleData) {
+  return await handlePost(
     api,
     'POST',
-    '/users/register',
-    userData
+    '/users/auth/google',
+    googleData,
+    {},
+    false
   );
-  return { data, meta };
+}
+
+/**
+ * Get Google user profile from access token
+ * @param {string} accessToken - Google access token
+ * @returns {Promise<Object>} User profile data
+ */
+export async function getGoogleUserProfile(accessToken) {
+  try {
+    const response = await fetch(
+      `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${accessToken}`
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch Google user profile');
+    }
+
+    const userData = await response.json();
+    return {
+      googleId: userData.id,
+      email: userData.email,
+      firstName: userData.given_name,
+      lastName: userData.family_name,
+      avatar: userData.picture,
+    };
+  } catch (error) {
+    console.error('Error fetching Google user profile:', error);
+    throw new Error('Failed to get Google user profile');
+  }
+}
+
+/**
+ * Authenticate with Google using access token
+ * @param {string} accessToken - Google access token
+ * @returns {Promise<Object>} Authentication response
+ */
+export async function authenticateWithGoogle(accessToken) {
+  try {
+    const userProfile = await getGoogleUserProfile(accessToken);
+    const result = await googleAuth(JSON.stringify(userProfile));
+    return result;
+  } catch (error) {
+    console.error('Google authentication error:', error);
+    throw error;
+  }
 }
 
 // Forgot Password
@@ -62,8 +117,25 @@ export async function changePassword(credentials) {
 
 // Email Verification
 export async function verifyEmail(token) {
-  const response = await api.get(`/users/verify-email?token=${token}`);
-  return response?.data;
+  return await handlePost(
+    api,
+    'GET',
+    `/users/verify-email?token=${token}`,
+    null,
+    {},
+    false,
+    false
+  );
+}
+
+// Resend Email Verification
+export async function resendEmailVerification(email) {
+  return await handlePost(
+    api,
+    'POST',
+    '/users/resend-verification',
+    JSON.stringify({ email })
+  );
 }
 
 // ✅ NEW: Update User Status (ADMIN)
@@ -98,52 +170,6 @@ export function getUserRole() {
   }
 
   return null;
-}
-
-/**
- * Get user role from URL path
- * @param {string} pathname - The current URL pathname
- * @returns {string|null} The user's role based on URL path
- */
-export function getRoleFromUrl(pathname) {
-  if (pathname.startsWith('/student/')) {
-    return 'STUDENT';
-  } else if (pathname.startsWith('/teacher/')) {
-    return 'TEACHER';
-  }
-  return null;
-}
-
-/**
- * Get login page URL based on role
- * @param {string} role - The user's role ('STUDENT' or 'TEACHER')
- * @returns {string} The appropriate login page URL
- */
-export function getLoginPageUrl(role) {
-  switch (role) {
-    case 'STUDENT':
-      return '/student/login';
-    case 'TEACHER':
-      return '/teacher/login';
-    default:
-      return '/student/login'; // default fallback
-  }
-}
-
-/**
- * Get dashboard URL based on role
- * @param {string} role - The user's role ('STUDENT' or 'TEACHER')
- * @returns {string} The appropriate dashboard URL
- */
-export function getDashboardUrl(role) {
-  switch (role) {
-    case 'STUDENT':
-      return '/student/dashboard';
-    case 'TEACHER':
-      return '/teacher/dashboard';
-    default:
-      return '/student/dashboard'; // default fallback
-  }
 }
 
 /**
@@ -244,13 +270,11 @@ export function getToken() {
 }
 
 /**
- * Get stored token based on URL path (alternative method)
- * @param {string} pathname - The current URL pathname
+ * Get stored token based on current URL path
  * @returns {string|null} The appropriate token
  */
-export function getTokenFromUrl(pathname) {
-  const roleFromUrl = getRoleFromUrl(pathname);
-
+export function getTokenFromUrl() {
+  const roleFromUrl = getRoleFromUrl();
   if (roleFromUrl === 'STUDENT') {
     return getCookie('student_token');
   } else if (roleFromUrl === 'TEACHER') {
@@ -268,9 +292,6 @@ const authService = {
   getUser,
   getToken,
   getUserRole,
-  getLoginPageUrl,
-  getDashboardUrl,
-  getRoleFromUrl,
   getTokenFromUrl,
 };
 

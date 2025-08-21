@@ -5,7 +5,7 @@ import { verifyOtpSchema } from '@/schemas/verifyOtpSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { otpVerification } from '@/services/authService';
+import { otpVerification } from '@/services/apiService';
 import { showToast } from '@/lib/toast';
 
 export default function OtpVerification() {
