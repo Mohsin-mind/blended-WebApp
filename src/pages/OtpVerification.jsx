@@ -29,12 +29,12 @@ export default function OtpVerification() {
         code: code,
       });
 
-      if (meta?.code && data?.setupToken) {
+      if (meta?.code === 1 && data?.setupToken) {
         // Store token in localStorage for persistence
         localStorage.setItem('teacher_reset_token', data.setupToken);
         localStorage.setItem('teacher_reset_email', email);
 
-        showToast('success', 'OTP verified successfully!');
+        showToast('success', meta?.message || 'OTP verified successfully!');
         // Redirect to reset password page with token
         navigate('/teacher/reset-password', {
           replace: true,
@@ -44,11 +44,18 @@ export default function OtpVerification() {
             from: 'teacher_otp_verification',
           },
         });
+      } else {
+        showToast(
+          'error',
+          meta?.message || 'Invalid OTP. Please check and try again.'
+        );
       }
     } catch (error) {
-      if (error) {
-        showToast('error', 'Invalid OTP. Please check and try again.');
-      }
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        'Invalid OTP. Please check and try again.';
+      showToast('error', errorMessage);
     }
   }
 

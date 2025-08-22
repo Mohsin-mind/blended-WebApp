@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Footer from './Footer';
 
 export default function MainLayout() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -28,6 +29,9 @@ export default function MainLayout() {
         <main className='flex-1 overflow-auto'>
           <Outlet />
         </main>
+
+        {/* Footer - fixed height */}
+        <Footer />
       </div>
       {/* </div> */}
     </div>

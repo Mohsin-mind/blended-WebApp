@@ -10,6 +10,7 @@ import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import { useState } from 'react';
+import { showToast } from '@/lib/toast';
 
 export default function ResetPassword() {
   const { state } = useLocation();
@@ -60,26 +61,38 @@ export default function ResetPassword() {
   });
 
   async function onSubmit(data) {
-    // Prepare payload based on flow type
-    const payload = isTeacherEmailOTPVerificationFlow
-      ? {
-          setupToken: token,
-          password: data.password,
+    try {
+      // Prepare payload based on flow type
+      const payload = isTeacherEmailOTPVerificationFlow
+        ? {
+            setupToken: token,
+            password: data.password,
+          }
+        : {
+          resetToken: token,
+            password: data.password,
+          };
+
+      const { meta } = await trigger(payload);
+
+      if (meta?.code === 1) {
+        showToast('success', meta?.message || 'Password reset successfully');
+        // Clear localStorage after successful password reset (only for teacher email verification flow)
+        if (isTeacherEmailOTPVerificationFlow) {
+          localStorage.removeItem('teacher_reset_token');
+          localStorage.removeItem('teacher_reset_email');
         }
-      : {
-          token: token,
-          password: data.password,
-        };
-
-    const { meta } = await trigger(payload);
-
-    if (meta?.code === 1) {
-      // Clear localStorage after successful password reset (only for teacher email verification flow)
-      if (isTeacherEmailOTPVerificationFlow) {
-        localStorage.removeItem('teacher_reset_token');
-        localStorage.removeItem('teacher_reset_email');
+        setIsSuccess(true);
+      } else {
+        showToast('error', meta?.message || 'Failed to reset password');
       }
-      setIsSuccess(true);
+    } catch (error) {
+      
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        'Failed to reset password';
+      showToast('error', errorMessage);
     }
   }
 

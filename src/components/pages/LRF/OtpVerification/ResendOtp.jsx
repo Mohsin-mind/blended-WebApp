@@ -2,6 +2,7 @@ import useSWRMutation from 'swr/mutation';
 import { forgotPassword } from '@/services/apiService';
 import { useEffect, useState } from 'react';
 import CONST from '@/utils/constant';
+import { showToast } from '@/lib/toast';
 
 function ResendOtp({ email }) {
   const [timer, setTimer] = useState(0);
@@ -11,8 +12,24 @@ function ResendOtp({ email }) {
   });
 
   async function resend() {
-    await trigger({ email });
-    setTimer(CONST.MAGIC_NUMBERS.RESEND_INTERVAL_SECONDS);
+    try {
+      const { meta } = await trigger({ email });
+      if (meta?.code === 1) {
+        showToast(
+          'success',
+          meta?.message || 'OTP has been resent to your email'
+        );
+        setTimer(CONST.MAGIC_NUMBERS.RESEND_INTERVAL_SECONDS);
+      } else {
+        showToast('error', meta?.message || 'Failed to resend OTP');
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        'Failed to resend OTP';
+      showToast('error', errorMessage);
+    }
   }
 
   useEffect(() => {

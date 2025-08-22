@@ -11,6 +11,7 @@ import EyeButton from '@/components/common/FormFields/EyeButton';
 import SORT_ORDERS from '@/utils/constant/tableCont';
 import useSWRMutation from 'swr/mutation';
 import { USER_STATUS } from '@/utils/constant/userStatus';
+import { showToast } from '@/lib/toast';
 
 function ManageUsers() {
   const ITEMS_PER_PAGE = 10;
@@ -93,9 +94,23 @@ function ManageUsers() {
   };
 
   async function onToggle(arg) {
-    const { meta } = await trigger(arg);
-    if (meta?.code === 1) {
-      mutate(queryKey);
+    try {
+      const { meta } = await trigger(arg);
+      if (meta?.code === 1) {
+        showToast(
+          'success',
+          meta?.message || 'User status updated successfully'
+        );
+        mutate(queryKey);
+      } else {
+        showToast('error', meta?.message || 'Failed to update user status');
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        'Failed to update user status';
+      showToast('error', errorMessage);
     }
   }
 

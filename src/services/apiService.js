@@ -1,4 +1,3 @@
-import api from './api';
 import {
   setCookie,
   getCookie,
@@ -8,32 +7,18 @@ import {
 import { handlePost } from './handlePost';
 
 // Login
-export async function login(credentials, showSuccessToast = true) {
-  return await handlePost(
-    api,
-    'POST',
-    '/users/login',
-    credentials,
-    {},
-    showSuccessToast
-  );
+export async function login(credentials) {
+  return await handlePost('POST', '/users/login', credentials);
 }
 
 // Signup
 export async function signup(userData) {
-  return await handlePost(api, 'POST', '/users/register', userData);
+  return await handlePost('POST', '/users/register', userData);
 }
 
 // Google Authentication
 export async function googleAuth(googleData) {
-  return await handlePost(
-    api,
-    'POST',
-    '/users/auth/google',
-    googleData,
-    {},
-    false
-  );
+  return await handlePost('POST', '/users/auth/google', googleData);
 }
 
 /**
@@ -83,27 +68,21 @@ export async function authenticateWithGoogle(accessToken) {
 
 // Forgot Password
 export async function forgotPassword(email) {
-  return await handlePost(api, 'POST', '/users/forgot-password', email);
+  return await handlePost('POST', '/users/forgot-password', email);
 }
 
 // OTP Verification
 export async function otpVerification(credentials) {
-  return await handlePost(
-    api,
-    'POST',
-    '/users/teachers/verify-code',
-    credentials
-  );
+  return await handlePost('POST', '/users/teachers/verify-code', credentials);
 }
 
 // Reset Password
 export async function resetPassword(credentials) {
-  return await handlePost(api, 'POST', '/users/reset-password', credentials);
+  return await handlePost('POST', '/users/reset-password', credentials);
 }
 
 export async function teacherResetPassword(credentials) {
   return await handlePost(
-    api,
     'POST',
     '/users/teachers/setup-password',
     credentials
@@ -112,26 +91,17 @@ export async function teacherResetPassword(credentials) {
 
 // Change Password
 export async function changePassword(credentials) {
-  return await handlePost(api, 'POST', '/change-password', credentials);
+  return await handlePost('POST', '/change-password', credentials);
 }
 
 // Email Verification
 export async function verifyEmail(token) {
-  return await handlePost(
-    api,
-    'GET',
-    `/users/verify-email?token=${token}`,
-    null,
-    {},
-    false,
-    false
-  );
+  return await handlePost('GET', `/users/verify-email?token=${token}`, null);
 }
 
 // Resend Email Verification
 export async function resendEmailVerification(email) {
   return await handlePost(
-    api,
     'POST',
     '/users/resend-verification',
     JSON.stringify({ email })
@@ -140,7 +110,7 @@ export async function resendEmailVerification(email) {
 
 // ✅ NEW: Update User Status (ADMIN)
 export function updateUserStatus({ userId, status }) {
-  return handlePost(api, 'PATCH', `/user-status/${userId}`, { status });
+  return handlePost('PATCH', `/user-status/${userId}`, { status });
 }
 
 /**
@@ -285,7 +255,7 @@ export function getTokenFromUrl() {
   return getToken();
 }
 
-const authService = {
+const apiService = {
   login,
   logout,
   isAuthenticated,
@@ -295,4 +265,4 @@ const authService = {
   getTokenFromUrl,
 };
 
-export default authService;
+export default apiService;

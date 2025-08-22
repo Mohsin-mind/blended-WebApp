@@ -11,6 +11,7 @@ import ROLE from '@/utils/constant/role';
 import studentLoginFrame from '@/assets/images/svg/student_login_frame.png';
 import teacherLoginFrame from '@/assets/images/svg/teacher_login_frame.png';
 import { useState } from 'react';
+import { showToast } from '@/lib/toast';
 
 export default function ForgotPassword() {
   const location = useLocation();
@@ -41,9 +42,26 @@ export default function ForgotPassword() {
   );
 
   async function onSubmit(data) {
-    const { meta } = await trigger(data);
-    if (meta?.code === 1) {
-      setIsSuccess(true);
+    try {
+      const { meta } = await trigger(data);
+      if (meta?.code === 1) {
+        showToast(
+          'success',
+          meta?.message || 'Password reset email sent successfully'
+        );
+        setIsSuccess(true);
+      } else {
+        showToast(
+          'error',
+          meta?.message || 'Failed to send password reset email'
+        );
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        'Failed to send password reset email';
+      showToast('error', errorMessage);
     }
   }
 

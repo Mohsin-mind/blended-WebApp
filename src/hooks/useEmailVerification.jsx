@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { verifyEmail } from '@/services/apiService';
-import { showToast } from '@/lib/toast';
 
 export function useEmailVerification() {
   const [isVerifying, setIsVerifying] = useState(false);

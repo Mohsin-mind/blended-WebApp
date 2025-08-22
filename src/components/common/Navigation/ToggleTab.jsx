@@ -55,7 +55,7 @@ const ToggleTab = ({
         type='button'
         onClick={() => handleTabClick(option.value)}
         className={clsx(
-          'px-16 py-3 font-medium rounded-full transition-all duration-300',
+          'px-[50px] py-[8px] font-medium rounded-full transition-all duration-300',
           'text-blended-blue_6 text-sm font-normal',
           isActive && 'bg-blended-blue_5 shadow-sm',
           !isActive && 'hover:text-blended-blue_3'

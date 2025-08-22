@@ -37,7 +37,24 @@ function AuthSuccessSection({
 
     try {
       setIsResending(true);
-      await resendTrigger(userEmail);
+      const { meta } = await resendTrigger(userEmail);
+      if (meta?.code === 1) {
+        showToast(
+          'success',
+          meta?.message || 'Verification email has been sent to your inbox'
+        );
+      } else {
+        showToast(
+          'error',
+          meta?.message || 'Failed to send verification email'
+        );
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        'Failed to send verification email';
+      showToast('error', errorMessage);
     } finally {
       setIsResending(false);
     }

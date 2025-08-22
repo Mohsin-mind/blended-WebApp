@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import WebAppLoginLayout from '@/components/pages/LRF/Login/WebAppLoginLayout';
 import LoginFormSection from '@/components/pages/LRF/Login/LoginFormSection';
 import AuthSuccessSection from '@/components/pages/LRF/ResetPassword/AuthSuccessSection';
@@ -7,7 +7,11 @@ import { signupSchema } from '@/schemas/signupSchema';
 import { ZodFormProvider } from '@/contexts/ZodFormContext';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation from 'swr/mutation';
-import { login as loginApi, signup as signupApi } from '@/services/apiService';
+import {
+  login as loginApi,
+  signup as signupApi,
+  resendEmailVerification,
+} from '@/services/apiService';
 import { showToast } from '@/lib/toast';
 import { setCookie } from '@/utils/helper';
 
@@ -15,12 +19,13 @@ export default function StudentLogin() {
   const navigate = useNavigate();
   const [activeForm, setActiveForm] = useState('login');
   const [isSignupSuccess, setIsSignupSuccess] = useState(false);
-  const [signupEmail, setSignupEmail] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [isFromLogin, setIsFromLogin] = useState(false);
 
   const { trigger: loginTrigger } = useSWRMutation(
     '/users/login',
     async (key, { arg }) => {
-      return await loginApi(JSON.stringify(arg), false);
+      return await loginApi(JSON.stringify(arg));
     }
   );
 
@@ -31,50 +36,103 @@ export default function StudentLogin() {
     }
   );
 
+  const { trigger: resendTrigger } = useSWRMutation(
+    '/users/resend-verification',
+    async (key, { arg }) => {
+      return await resendEmailVerification(arg);
+    }
+  );
+
+  // Auto-trigger email resend only when from login verification
+  useEffect(() => {
+    if (isSignupSuccess && userEmail && isFromLogin) {
+      handleAutoResendEmail();
+    }
+  }, [isSignupSuccess, userEmail, isFromLogin]);
+
+  const handleAutoResendEmail = async () => {
+    try {
+      await resendTrigger(userEmail);
+      showToast('success', 'Verification email has been sent to your inbox');
+    } catch (error) {
+      console.error('Auto resend email failed:', error);
+      // Don't show error toast for auto-resend, let user manually resend if needed
+    }
+  };
+
   async function onSubmit(data) {
     const trigger = activeForm === 'login' ? loginTrigger : signupTrigger;
-    const { meta, data: responseData } = await trigger(data);
 
-    if (meta?.code === 1) {
-      if (activeForm === 'login') {
-        // Handle login
-        if (responseData?.token) {
-          // Validate that the user is actually a student
-          if (responseData.user?.role !== 'STUDENT') {
-            showToast(
-              'error',
-              'This login page is for students only. Please use the teacher login page.'
-            );
-            return;
-          }
-
-          setCookie('student_token', responseData?.token);
-          setCookie('student_detail', JSON.stringify(responseData));
-          navigate('/student/dashboard', { replace: true });
-          showToast(meta?.code ? 'success' : 'error', meta?.message);
-        } else {
-          showToast('error', 'Invalid credentials');
-        }
-      } else {
-        // Handle signup
-        if (responseData?.user?.emailVerified) {
-          // Email is verified, proceed to dashboard
+    try {
+      const { meta, data: responseData } = await trigger(data);
+      if (meta?.code === 1) {
+        if (activeForm === 'login') {
+          // Handle login
           if (responseData?.token) {
+            // Validate that the user is actually a student
+            if (responseData.user?.role !== 'STUDENT') {
+              showToast(
+                'error',
+                'This login page is for students only. Please use the teacher login page.'
+              );
+              return;
+            }
+
             setCookie('student_token', responseData?.token);
             setCookie('student_detail', JSON.stringify(responseData));
             navigate('/student/dashboard', { replace: true });
+            showToast('success', meta?.message || 'Login successful');
+          } else {
+            showToast('error', 'Invalid credentials');
           }
         } else {
-          // Email not verified, show success message
-          setSignupEmail(data.email);
-          setIsSignupSuccess(true);
+          // Handle signup
+          if (responseData?.user?.emailVerified) {
+            // Email is verified, proceed to dashboard
+            if (responseData?.token) {
+              setCookie('student_token', responseData?.token);
+              setCookie('student_detail', JSON.stringify(responseData));
+              navigate('/student/dashboard', { replace: true });
+              showToast('success', meta?.message || 'Signup successful');
+            }
+          } else {
+            // Email not verified, show success message
+            setUserEmail(data.email);
+            setIsFromLogin(false); // Mark that this is from signup
+            setIsSignupSuccess(true);
+            showToast(
+              'success',
+              meta?.message ||
+                'Account created successfully. Please check your email to verify your account.'
+            );
+          }
         }
+      } else {
+        showToast(
+          'error',
+          meta?.message ||
+            (activeForm === 'login' ? 'Invalid credentials' : 'Signup failed')
+        );
       }
-    } else {
-      showToast(
-        'error',
-        activeForm === 'login' ? 'Invalid credentials' : 'Signup failed'
-      );
+    } catch (error) {
+      // Handle the specific case where login fails due to unverified email (400 error with resend flag)
+      if (
+        activeForm === 'login' &&
+        error?.status === 400 &&
+        error?.response?.data?.meta?.error?.reSend === true
+      ) {
+        setUserEmail(data.email);
+        setIsFromLogin(true); // Mark that this is from login verification
+        setIsSignupSuccess(true);
+        return;
+      }
+
+      // Handle other errors
+      const errorMessage =
+        error?.response?.data?.meta?.message ||
+        error?.message ||
+        (activeForm === 'login' ? 'Login failed' : 'Signup failed');
+      showToast('error', errorMessage);
     }
   }
 
@@ -120,7 +178,8 @@ export default function StudentLogin() {
 
   const handleBackToLogin = () => {
     setIsSignupSuccess(false);
-    setSignupEmail('');
+    setUserEmail('');
+    setIsFromLogin(false);
     setActiveForm('login');
   };
 
@@ -137,7 +196,7 @@ export default function StudentLogin() {
           buttonText: 'Back to Login',
           onButtonClick: handleBackToLogin,
           showResendEmail: true,
-          userEmail: signupEmail,
+          userEmail: userEmail,
         }}
       />
     );
