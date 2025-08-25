@@ -50,7 +50,7 @@ export default function ResetPassword() {
 
   // Choose the appropriate API based on flow type
   const apiEndpoint = isTeacherEmailOTPVerificationFlow
-    ? '/users/teachers/setup-password'
+    ? '/users/setup-teacher-password'
     : '/users/reset-password';
 
   const { trigger } = useSWRMutation(apiEndpoint, async (key, { arg }) => {

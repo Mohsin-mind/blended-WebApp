@@ -16,7 +16,7 @@ export default function OtpVerification() {
   const email = searchParams.get('email') || '';
 
   const { trigger } = useSWRMutation(
-    '/users/teachers/verify-code',
+    '/users/verify-teacher-code',
     async (key, { arg }) => {
       return await otpVerification(JSON.stringify(arg));
     }

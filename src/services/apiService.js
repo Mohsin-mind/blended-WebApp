@@ -73,7 +73,7 @@ export async function forgotPassword(email) {
 
 // OTP Verification
 export async function otpVerification(credentials) {
-  return await handlePost('POST', '/users/teachers/verify-code', credentials);
+  return await handlePost('POST', '/users/verify-teacher-code', credentials);
 }
 
 // Reset Password
@@ -84,7 +84,7 @@ export async function resetPassword(credentials) {
 export async function teacherResetPassword(credentials) {
   return await handlePost(
     'POST',
-    '/users/teachers/setup-password',
+    '/users/setup-teacher-password',
     credentials
   );
 }
